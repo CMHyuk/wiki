@@ -111,6 +111,16 @@ public class Main {
 <? extends T>	// T와 T의 자손 타입만 가능
 ```
 
+```java
+<K super B>	// B와 A타입만 올 수 있음
+<K super E>	// E, D, A타입만 올 수 있음
+<K super A>	// A타입만 올 수 있음
+ 
+<? super B>	// B와 A타입만 올 수 있음
+<? super E>	// E, D, A타입만 올 수 있음
+<? super A>	// A타입만 올 수 있음
+```
+
 출처
 * https://inpa.tistory.com/entry/JAVA-☕-제네릭Generics-개념-문법-정복하기
 * https://st-lab.tistory.com/153
