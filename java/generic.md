@@ -76,4 +76,41 @@ public class Main {
 }
 ```
 
-출처: https://inpa.tistory.com/entry/JAVA-☕-제네릭Generics-개념-문법-정복하기 [Inpa Dev 👨‍💻:티스토리]
+**특정 범위 내로 좁혀서 제한**
+* `extends` 와 `super`, 그리고 `?`(물음표)다. `?`는 와일드 카드라고 해서 쉽게 말해 '알 수 없는 타입'이라는 의미다.
+
+```java
+<K extends T>	// T와 T의 자손 타입만 가능 (K는 들어오는 타입으로 지정 됨)
+<K super T>	// T와 T의 부모(조상) 타입만 가능 (K는 들어오는 타입으로 지정 됨)
+ 
+<? extends T>	// T와 T의 자손 타입만 가능
+<? super T>	// T와 T의 부모(조상) 타입만 가능
+<?>		// 모든 타입 가능. <? extends Object>랑 같은 의미
+```
+
+* 보통 이해하기 쉽게 다음과 같이 부른다. 
+  * extends T : 상한 경계 
+  * ? super T : 하한 경계
+*  K extends T와 ? extends T는 비슷한 구조지만 차이점이 있다.
+  * '유형 경계를 지정'하는 것은 같으나 경계가 지정되고 K는 특정 타입으로 지정이 되지만, ?는 타입이 지정되지 않는다는 의미다.
+
+```java
+/*
+ * Number와 이를 상속하는 Integer, Short, Double, Long 등의
+ * 타입이 지정될 수 있으며, 객체 혹은 메소드를 호출 할 경우 K는
+ * 지정된 타입으로 변환이 된다.
+ */
+<K extends Number>
+ 
+ 
+/*
+ * Number와 이를 상속하는 Integer, Short, Double, Long 등의
+ * 타입이 지정될 수 있으며, 객체 혹은 메소드를 호출 할 경우 지정 되는 타입이 없어
+ * 타입 참조를 할 수는 없다.
+ */
+<? extends T>	// T와 T의 자손 타입만 가능
+```
+
+출처
+* https://inpa.tistory.com/entry/JAVA-☕-제네릭Generics-개념-문법-정복하기
+* https://st-lab.tistory.com/153
