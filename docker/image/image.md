@@ -35,4 +35,19 @@
 
 `docker ps` - 실행 중인 컨테이너 리스트 조회
 
-`docker rm -f` 실행 중인 컨테이너 삭제
+`docker rm -f` - 실행 중인 컨테이너 삭제
+
+### 이미지와 메타데이터
+ENV = 소프트웨어가 실행 시 참조할 설정 정보
+
+CMD = 컨테이너 실행 시 프로세스 실행 명령어 지정
+
+`docker image inspect 이미지명` - 이미지의 세부 정보 조회
+
+`docker container inspect 컨테이너명` - 컨테이너의 세부 정보 조회
+
+`docker run 이미지명 (실행명령)` - 컨테이너 실행 시 메타데이터의 cmd 덮어쓰기
+
+`docker run --env KEY=VALUE 이미지명` - 컨테이너 실행 시 메타데이터의 env 덮어쓰기
+
+`docker ps -a` - 종료된 컨테이너 포함 모든 컨테이너 조회
