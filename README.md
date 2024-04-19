@@ -1,7 +1,5 @@
 ### SPRING 정리
-- [인프런](spring/spring) 
+- [인프런 강의](spring/spring) 
 
-### 도커
-- [가상머신](docker/vt)
-- [이미지](docker/image)
-- [스토리지와 볼륨](docker/storage)
+### 개발자를 위한 쉬운 도커커
+- [인프런 강의](docker/index.md)
