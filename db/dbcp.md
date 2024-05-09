@@ -34,12 +34,17 @@
 #### maximumPoolSize
 - pool이 가질 수 있는 최대 connection 수
 - idle과 active(in-use) connection 합쳐서 최대 수
+- 우선순위 minimumldle < maximumPoolSize
 
 #### maxLifetime
 - pool에서 connection의 최대 수명
 - maxLifetime을 넘기면 idle일 경우 pool에서 바로 제거, active인 경우 pool로 반환된 후 제거
 - pool로 반환 안되면 maxLiketime 동작 안 함 = 반환을 잘 시켜주는 것이 중요
 - DB의 connection time limit보다 몇 초 짧게 설정해야함
+  - 만약 DB의 wait_timeout이 60초, DBCP의 maxLifetime이 60초라면?
+    - 59초에 요청받고 처리하려는데, wait_timeout이 발동되어 커넥션 끊음 → 요청 처리 x
 
 #### connectionTimeout
 - pool에서 connection을 받기 위한 대기 시간
+  - 만약 connectionTimeout이 30초라면?
+      - 무한정 커넥션을 기다릴 수 없기 때문에 30초 뒤에 연결 끊음
