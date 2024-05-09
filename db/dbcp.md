@@ -30,6 +30,7 @@
 - pool에서 유지하는 최소한의 idle(기다리고 있는 커넥션) connection 수
 - idle connection 수가 minimumldle보다 작고, 전체 connection 수도 maximumPoolSize보다 작다면 신속하게 추가로 connection을 만듦
 - 기본 값은 maximumPoolSize와 동일 (=pool size 고정)
+  - 만약 minimumldle < maximumPoolSize이라면 트래픽이 올 때마다 새롭게 커넥션을 맺어야함 → 커넥션을 맺는 시간보다 트래픽이 더 빨리 밀려오면 응답이 느려짐
 
 #### maximumPoolSize
 - pool이 가질 수 있는 최대 connection 수
