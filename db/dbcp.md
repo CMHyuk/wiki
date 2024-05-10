@@ -49,3 +49,12 @@
 - pool에서 connection을 받기 위한 대기 시간
   - 만약 connectionTimeout이 30초라면?
       - 무한정 커넥션을 기다릴 수 없기 때문에 30초 뒤에 연결 끊음
+
+#### 적절한 connection 수를 찾기 위한 과정
+- 모니터링 환경 구축(서버 리소스, 서버 스레드 수, DBCP 등등)
+- 백엔드 시스템 부하 테스트
+- request per second와 avg response time 확인
+- 백엔드 서버, DB 서버의 CPU, MEM 등등 리소스 사용률 확인
+- thread per request 모델이라면 active thread 수 확인
+- DBCP의 active connection 수 확인
+- 백엔드 서버 수를 고려해 DBCP의 max pool size 결정
