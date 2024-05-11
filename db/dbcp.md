@@ -40,7 +40,7 @@
 #### maxLifetime
 - pool에서 connection의 최대 수명
 - maxLifetime을 넘기면 idle일 경우 pool에서 바로 제거, active인 경우 pool로 반환된 후 제거
-- pool로 반환 안되면 maxLiketime 동작 안 함 = 반환을 잘 시켜주는 것이 중요
+- pool로 반환 안되면 maxLiketime 동작 안 함 => 반환을 잘 시켜주는 것이 중요
 - DB의 connection time limit보다 몇 초 짧게 설정해야함
   - 만약 DB의 wait_timeout이 60초, DBCP의 maxLifetime이 60초라면?
     - 59초에 요청받고 처리하려는데, wait_timeout이 발동되어 커넥션 끊음 → 요청 처리 x
