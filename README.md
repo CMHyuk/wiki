@@ -5,4 +5,4 @@
 - [인프런 강의](docker/index.md)
 
 ### DB
-- [데이터 베이스](db/btree)
+- [데이터 베이스](db/index.md)
