@@ -7,5 +7,8 @@
 ### DB
 - [데이터 베이스](db/index.md)
 
-### Os
+### OS
 - [운영 체제](os)
+
+### NETWORK
+- [네트워크](network)
