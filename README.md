@@ -11,4 +11,4 @@
 - [운영 체제](os/index.md)
 
 ### NETWORK
-- [네트워크](network)
+- [네트워크](network/index.md)
