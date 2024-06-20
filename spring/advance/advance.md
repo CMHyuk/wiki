@@ -45,3 +45,15 @@ JDK 동적 프록시는 인터페이를 구현 (implements) CGLIB은 구체 클�
 - 부모 클래스의 생성자를 체크 -> CGLIB은 자식 클래스를 동적으로 생성하기 때문에 기본 생성자가 필요
 - 클래스에 `final`키워드가 붙으면 상속 불가능 -> CGLIB에선 예외가 발생
 - 메서드에 `final` 키워드가 붙으면 해당 메서드를 오버라이딩 할 수 없음 -> CGLIB에서는 프록시 로직이 동작 x
+
+### 프록시 팩토리
+- 인터페이스가 있는 경우에 JDK 동적 프록시를 적용하고, 그렇지 않은 경우에 CGLIB을 적용하려면?
+  - 프록시 팩토리를 이용해 둘 대신에 `Adivce` 를 사용하면 됨
+
+```java
+Target target = new Target();
+ProxyFactory proxyFactory = new ProxyFactory(tartget);
+proxyFactory.addAdvice(new TimeAdvice());
+proxyFactory.getProxy();
+// proxyFactory.setProxyTargetClass(true) 인터페이스가 있어도 무조건 CGLIB
+```
