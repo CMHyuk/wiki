@@ -58,16 +58,4 @@ proxyFactory.getProxy();
 // proxyFactory.setProxyTargetClass(true) 인터페이스가 있어도 무조건 CGLIB
 ```
 
-인터페이스가 있는 경우에 JDK 동적 프록시를 적용하고, 그렇지 않은 경우에 CGLIB을 적용하려면?
-
-프록시 팩토리를 이용해 둘 대신에 `Adivce` 를 사용하면 됨
-
-```java
-Target target = new Target();
-ProxyFactory proxyFactory = new ProxyFactory(tartget);
-proxyFactory.addAdvice(new TimeAdvice());
-proxyFactory.getProxy();
-// proxyFactory.setProxyTargetClass(true) 인터페이스가 있어도 무조건 CGLIB
-```
-
 AOP 적용 수 만큼 프록시가 생성된다고 착각하지만 프록시는 하나만 만들고, 하나의 프록시에 여러 어드바이저를 적용함
