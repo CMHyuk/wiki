@@ -8,6 +8,7 @@
 
 ### DB
 - [데이터 베이스](db/index.md)
+- [엘라스틱 서치](db/elasticsearch/index.md)
 
 ### OS
 - [운영 체제](os/index.md)
