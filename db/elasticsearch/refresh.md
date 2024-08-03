@@ -13,3 +13,18 @@ Elasticsearch는 성능을 최적화하기 위해 데이터를 인덱스에 추�
 * 단점  
   * 성능 저하 - 너무 잦은 refresh는 색인 성능을 저하시킬 수 있습니다. 새로운 세그먼트를 지속적으로 생성하고 병합해야 하므로, 디스크 I/O가 증가한다.  
   * 리소스 소모: refresh 작업은 CPU와 메모리를 소모하므로, 빈번한 refresh는 시스템 자원을 더 많이 사용하게 된다.
+
+## Refresh Policy
+```
+(1) 디폴트 옵션 (false)
+(2) 즉시 새로고침 (true)
+(3) 새로고침 될 때까지 기다림 (wait_for)
+```
+
+실시간을 어느정도 보장받기 원한다면, (2) 번 혹은 (3) 번을 선택한다.
+
+### 스프링에서의 Refresh Policy
+
+![img.png](../../image/refresh.png)
+![img.png](../../image/policy.png)
+![img.png](../../image/setting.png)
