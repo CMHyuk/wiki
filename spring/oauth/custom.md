@@ -1,5 +1,7 @@
 #### 동의 화면
-동의 화면도 커스텀은 OAuth2AuthorizationConsentService implements 후 OAuth2AuthorizationConsent 을 매핑해서 저장
+동의 화면 커스텀은 OAuth2AuthorizationConsentService implements 후 OAuth2AuthorizationConsent 을 매핑해서 저장
+
+- - -
 
 #### OAuth2Authorization
 **`OAuth2Authorization` 저장 과정**
@@ -14,5 +16,39 @@
 
 위 과정을 고려해 `save()` 커스텀 로직 작성
 
+- - -
+
 #### code, state 값 따로 저장 이유
 authorizationService.findByToken(authorizationConsentAuthentication.getState(), STATE_TOKEN_TYPE); 처럼 조회한 후 로직 처리하기 때문에 OAuth2Authorization 에 담겨져 있지만 따로 필드 생성
+
+- - -
+
+**로그인 고려 사항**
+
+code 생성, 저장 호출 클래스
+
+`OAuth2AuthorizationCodeRequestAuthenticationProvider` - 동의 항목 체크 후 code 생성되는 클래스
+`OAuth2AuthorizationConsentAuthenticationProvider` - 동의 항목 모두 체크된 상태에서 재로그인 시 code 생성 되는 클래스
+
+1. 최초 로그인 시 `currentAuthorizationConsent`은 null이므로 state만 생성해서 `OAuth2Authorization` 저장하고 동의 화면에서 스코프 체크 후 code 생성
+    1.  재 로그인 시 `currentAuthorizationConsent`은 null이 아니어서 state는 생성하지 않고, 최초 로그인 시 동의 항목 모두 체크했으면 바로 code 생성하고 `save()` 호출, 모두 체크하지 않았다면 최초 로그인과 같은 방식으로 code 생성 후 `save()`
+
+그래서 두 가지 상황을 고려해 시큐리티에서 넘겨준 `authorization`의`OAuth2Authorization.Token<OAuth2AuthorizationCode>`가 null이면 code 값은 비워두고 존재하면 값 꺼내서 저장하도록 구현 (그냥 넘어온 값 저장하게 하면 NPE 발생)
+
+- - -
+
+**accessToken 저장 고려 사항**
+
+토큰 생성, 저장 호출 클래스
+`OAuth2AuthorizationCodeAuthenticationProvider` 
+
+1. 로그인, 동의 화면에 거쳐서 만들어진 code로 `OAuth2Authorization` 가져옴
+2. code가 이미 사용된 코드인지, 기간 만료됐는지 확인
+3. accessToken 생성 후 `registeredClient`가 가지고 있는 `AuthorizationGrantType`을 체크하며 존재하면 refreshToken, idToken 생성
+4. code는 사용했으므로 메타데이터 값 false에서 true로 바꾼 후 `save()` 호출
+
+토큰 저장 시 만료 된 코드로 저장되지 않게 하려면 db에 저장된 `OAuth2Authorization` 의 code 메타데이터 값을 확인하고 false면 저장하고 true면 저장 안 되도록 한 후 시큐리티에서 넘겨준 `OAuth2Authorization`를 db에 업데이트
+
+**토큰 생성도 커스텀 한다면 아래 참고**
+
+https://garnier.wf/blog/2024/02/12/spring-auth-server-tokens.html
