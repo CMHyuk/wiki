@@ -52,3 +52,63 @@ code 생성, 저장 호출 클래스
 **토큰 생성도 커스텀 한다면 아래 참고**
 
 https://garnier.wf/blog/2024/02/12/spring-auth-server-tokens.html
+
+- - -
+
+### **토큰 검증 흐름**
+
+`NimbusJwtDecoder` 클래스
+
+```
+public Jwt decode(String token) throws JwtException {
+        JWT jwt = this.parse(token);
+        if (jwt instanceof PlainJWT) {
+            this.logger.trace("Failed to decode unsigned token");
+            throw new BadJwtException("Unsupported algorithm of " + jwt.getHeader().getAlgorithm());
+        } else {
+            Jwt createdJwt = this.createJwt(token, jwt);
+            return this.validateJwt(createdJwt);
+        }
+    }
+```
+
+- 토큰 파싱 → Jwt 생성 후 검증
+- `PlainJWT`는 서명이 없는 JWT  - `alg`(알고리즘) 헤더가 `"none"`으로 설정되며, 이는 토큰이 서명되지 않았음을 의미
+
+**검증**
+
+`DelegatingOAuth2TokenValidator`에서 `JwtTimestampValidator` 호출
+
+```
+public OAuth2TokenValidatorResult validate(Jwt jwt) {
+        Assert.notNull(jwt, "jwt cannot be null");
+        Instant expiry = jwt.getExpiresAt();
+        if (expiry != null && Instant.now(this.clock).minus(this.clockSkew).isAfter(expiry)) {
+            OAuth2Error oAuth2Error = this.createOAuth2Error(String.format("Jwt expired at %s", jwt.getExpiresAt()));
+            return OAuth2TokenValidatorResult.failure(new OAuth2Error[]{oAuth2Error});
+        } else {
+            Instant notBefore = jwt.getNotBefore();
+            if (notBefore != null && Instant.now(this.clock).plus(this.clockSkew).isBefore(notBefore)) {
+                OAuth2Error oAuth2Error = this.createOAuth2Error(String.format("Jwt used before %s", jwt.getNotBefore()));
+                return OAuth2TokenValidatorResult.failure(new OAuth2Error[]{oAuth2Error});
+            } else {
+                return OAuth2TokenValidatorResult.success();
+            }
+        }
+    }
+```
+
+- null 인지, 만료된 토큰인지 체크
+
+이상 없으면 `BearerTokenAuthenticationFilter` 에서
+
+```
+SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
+                context.setAuthentication(authenticationResult);
+                this.securityContextHolderStrategy.setContext(context);
+                this.securityContextRepository.saveContext(context, request, response);
+```
+
+- SecurityContext에 담아 반환
+    - `SecurityContextHolder.*getContext*().getAuthentication();` 로 유저 정보를 가져올 수 있음
+        - ArgumentResovler와 활용 가능
