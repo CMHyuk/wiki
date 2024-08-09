@@ -30,6 +30,24 @@ code 생성, 저장 호출 클래스
 `OAuth2AuthorizationCodeRequestAuthenticationProvider` - 동의 항목 체크 후 code 생성되는 클래스
 `OAuth2AuthorizationConsentAuthenticationProvider` - 동의 항목 모두 체크된 상태에서 재로그인 시 code 생성 되는 클래스
 
+``` java
+if (this.authorizationConsentRequired.test(authenticationContextBuilder.build())) {
+    String state = DEFAULT_STATE_GENERATOR.generateKey();
+    OAuth2Authorization authorization = authorizationBuilder(registeredClient, principal, authorizationRequest).attribute("state", state).build();
+    if (this.logger.isTraceEnabled()) {
+        this.logger.trace("Generated authorization consent state");
+    }
+        this.authorizationService.save(authorization);
+        Set<String> currentAuthorizedScopes = currentAuthorizationConsent != null ? currentAuthorizationConsent.getScopes() : null;
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace("Saved authorization");
+        }
+        return new OAuth2AuthorizationConsentAuthenticationToken(authorizationRequest.getAuthorizationUri(), registeredClient.getClientId(), principal, state, currentAuthorizedScopes, (Map)null);
+}
+```
+* 현재 인증된 사용자에게 특정 클라이언트(애플리케이션) 및 요청된 범위(scopes)에 대해 동의(consent)가 필요한지 여부를 검사
+    * 스코프 모두 체크되면 이 로직을 타지 않고 스코프를 모두 체크하지 않은 경우 이 로직을 탐     
+
 1. 최초 로그인 시 `currentAuthorizationConsent`은 null이므로 state만 생성해서 `OAuth2Authorization` 저장하고 동의 화면에서 스코프 체크 후 code 생성
     1.  재 로그인 시 `currentAuthorizationConsent`은 null이 아니어서 state는 생성하지 않고, 최초 로그인 시 동의 항목 모두 체크했으면 바로 code 생성하고 `save()` 호출, 모두 체크하지 않았다면 최초 로그인과 같은 방식으로 code 생성 후 `save()`
 
@@ -59,7 +77,7 @@ https://garnier.wf/blog/2024/02/12/spring-auth-server-tokens.html
 
 `NimbusJwtDecoder` 클래스
 
-```
+``` java
 public Jwt decode(String token) throws JwtException {
         JWT jwt = this.parse(token);
         if (jwt instanceof PlainJWT) {
@@ -79,7 +97,7 @@ public Jwt decode(String token) throws JwtException {
 
 `DelegatingOAuth2TokenValidator`에서 `JwtTimestampValidator` 호출
 
-```
+``` java
 public OAuth2TokenValidatorResult validate(Jwt jwt) {
         Assert.notNull(jwt, "jwt cannot be null");
         Instant expiry = jwt.getExpiresAt();
@@ -102,7 +120,7 @@ public OAuth2TokenValidatorResult validate(Jwt jwt) {
 
 이상 없으면 `BearerTokenAuthenticationFilter` 에서
 
-```
+``` java
 SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
                 context.setAuthentication(authenticationResult);
                 this.securityContextHolderStrategy.setContext(context);
