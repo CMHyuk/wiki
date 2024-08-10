@@ -1,6 +1,6 @@
 ### SPRING
 - [스프링 기본](spring/basic/spring.md) 
-- [고급편](spring/advance/advance.md)
+- [스프링 고급편](spring/advance/advance.md)
 - [OAuth](spring/oauth)
 
 ### 개발자를 위한 쉬운 도커
