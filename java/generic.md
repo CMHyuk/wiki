@@ -41,7 +41,7 @@ public class Main {
 ```
 
 하지만 제네릭 타입의 배열 선언은 허용된다.
-위의 식과 차이점은 배열에 저장할 Sample 객체의 타입 파라미터를 Integer로 지정한다는 뜻이다. 즉,new Sample<Integer>() 인스턴스는 저장이 가능하며, new Sample<String>() 인스턴스는 저장이 불가능하다는 소리이다.
+위의 식과 차이점은 배열에 저장할 Sample 객체의 타입 파라미터를 Integer로 지정한다는 뜻이다. 즉, `new Sample<Integer>()` 인스턴스는 저장이 가능하며, `new Sample<String>()` 인스턴스는 저장이 불가능하다는 소리이다.
 
 ```java
 class Sample<T> { 
