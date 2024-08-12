@@ -162,7 +162,8 @@ SecurityContext context = this.securityContextHolderStrategy.createEmptyContext(
 
 `JwtEncoder`를 상속해 `CustomJwtEncoder`를 사용하도록 하기
 
-* 내부 로직 흐름
+#### 내부 로직 흐름
+
 ```java
 public Jwt encode(JwtEncoderParameters parameters) throws JwtEncodingException {
     RSAKey rsaKey = getRsaKey();
