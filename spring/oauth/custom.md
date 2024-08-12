@@ -130,3 +130,72 @@ SecurityContext context = this.securityContextHolderStrategy.createEmptyContext(
 - SecurityContext에 담아 반환
     - `SecurityContextHolder.*getContext*().getAuthentication();` 로 유저 정보를 가져올 수 있음
         - ArgumentResovler와 활용 가능
+
+- - -
+#### 멀티 테넌트 구조의 경우의 JWKSource
+
+멀티 테넌트 구조의 경우 테넌트마다 public, private key가 다르기 때문에 런타임 중 각 테넌트에 맞는 키를 사용할 수 있어야 함
+
+```java
+@Bean
+    public JWKSource<SecurityContext> jwkSource() throws Exception {
+        KeyResponse key = masterTenantInfoQueryService.getKey("master");
+        byte[] publicKeyBytes = key.pubKey();
+        byte[] privateKeyBytes = key.priKey();
+
+        RSAPublicKey rsaPublicKey = loadPublicKey(publicKeyBytes);
+        RSAPrivateKey rsaPrivateKey = loadPrivateKey(privateKeyBytes);
+
+        RSAKey rsaKey = new RSAKey.Builder(rsaPublicKey)
+                .privateKey(rsaPrivateKey)
+                .keyID(UUID.randomUUID().toString()) // 키 ID를 생성
+                .build();
+
+        JWKSet jwkSet = new JWKSet(rsaKey);
+        return (jwkSelector, context) -> jwkSelector.select(jwkSet);
+    }
+```
+
+위처럼 서버를 기동시킬 때 등록 시키면 런타임 중 새로 생성된 테넌트가 있을 경우 그 테넌트의 키는 활용하지 못함
+
+#### JWKSource 동적으로 사용하기
+
+`JwtEncoder`를 상속해 `CustomJwtEncoder`를 사용하도록 하기
+
+* 내부 로직 흐름
+```java
+public Jwt encode(JwtEncoderParameters parameters) throws JwtEncodingException {
+    RSAKey rsaKey = getRsaKey();
+    JWKSet jwkSet = new JWKSet(rsaKey);
+    JWKSource<SecurityContext> jwkSource = (jwkSelector, context) -> jwkSelector.select(jwkSet);
+
+    JwsHeader headers = parameters.getJwsHeader();
+    JwtClaimsSet claims = parameters.getClaims();
+    JWK jwk = this.selectJwk(jwkSource, headers);
+    headers = addKeyIdentifierHeadersIfNecessary(headers, jwk);
+    String jws = this.serialize(headers, claims, jwk);
+    return new Jwt(jws, claims.getIssuedAt(), claims.getExpiresAt(), headers.getHeaders(), claims.getClaims());
+}
+
+private RSAKey getRsaKey() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String clientId = authentication.getName();
+
+    ClientInfo clientInfo = clientInfoQueryRepository.findByClientId(clientId)
+            .orElseThrow(() -> BusinessException.from(UserErrorCode.NOT_FOUND));
+    TenantInfo tenantInfo = tenantInfoQueryRepository.findByTenantId(clientInfo.getTenantId())
+            .orElseThrow(() -> BusinessException.from(TenantErrorCode.NOT_FOUND));
+
+    byte[] publicKeyBytes = tenantInfo.getTenantRSAPublicKey();
+    byte[] privateKeyBytes = tenantInfo.getTenantRSAPrivateKey();
+
+    RSAPublicKey rsaPublicKey = loadPublicKey(publicKeyBytes);
+    RSAPrivateKey rsaPrivateKey = loadPrivateKey(privateKeyBytes);
+
+    return new RSAKey.Builder(rsaPublicKey)
+            .privateKey(rsaPrivateKey)
+            .keyID(UUID.randomUUID().toString())
+            .build();
+}
+```
+현재 접근한 자원이 누구인지 추출 후 db에 저장된 public, private key로 jwkSource 등록 후 이를 활용해 encode 하도록 구현
