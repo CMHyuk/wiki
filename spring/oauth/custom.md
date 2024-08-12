@@ -199,4 +199,5 @@ private RSAKey getRsaKey() {
             .build();
 }
 ```
+
 현재 접근한 자원이 누구인지 추출 후 db에 저장된 public, private key로 jwkSource 등록 후 이를 활용해 encode 하도록 구현
