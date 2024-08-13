@@ -1,9 +1,9 @@
-#### 동의 화면
+### 동의 화면
 동의 화면 커스텀은 OAuth2AuthorizationConsentService implements 후 OAuth2AuthorizationConsent 을 매핑해서 저장
 
 - - -
 
-#### OAuth2Authorization
+### OAuth2Authorization
 **`OAuth2Authorization` 저장 과정**
 
 - `save()` 가 총 3번이 호출
@@ -18,12 +18,12 @@
 
 - - -
 
-#### code, state 값 따로 저장 이유
+### code, state 값 따로 저장 이유
 authorizationService.findByToken(authorizationConsentAuthentication.getState(), STATE_TOKEN_TYPE); 처럼 조회한 후 로직 처리하기 때문에 OAuth2Authorization 에 담겨져 있지만 따로 필드 생성
 
 - - -
 
-**로그인 고려 사항**
+### 로그인 고려 사항
 
 code 생성, 저장 호출 클래스
 
@@ -132,7 +132,7 @@ SecurityContext context = this.securityContextHolderStrategy.createEmptyContext(
         - ArgumentResovler와 활용 가능
 
 - - -
-#### 멀티 테넌트 구조의 경우의 JWKSource
+### 멀티 테넌트 구조의 경우의 JWKSource
 
 멀티 테넌트 구조의 경우 테넌트마다 public, private key가 다르기 때문에 런타임 중 각 테넌트에 맞는 키를 사용할 수 있어야 함
 
@@ -201,3 +201,32 @@ private RSAKey getRsaKey() {
 ```
 
 현재 접근한 자원이 누구인지 추출 후 db에 저장된 public, private key로 jwkSource 등록 후 이를 활용해 encode 하도록 구현
+
+- - -
+
+### 토큰 Decode 커스텀
+
+encode와 마찬가지로 decode 시 테넌트마다 공개키가 다르므로 이에 맞는 공개키를 사용해야함
+
+```java
+@Bean
+public JwtDecoder jwtDecoder() throws Exception {
+      KeyResponse key = tenantInfoService.getKey("oauth-client-id");
+      RSAPublicKey rsaPublicKey = loadPublicKey(key.pubKey());
+      return NimbusJwtDecoder.withPublicKey(rsaPublicKey).build();
+}    
+```
+
+위처럼 하면 동적으로 키를 사용할 수 없음, 하지만 처음 서버를 기동할 때 무조건 하나는 등록시켜야 에러가 나지 않기 때문에 마스터 테넌트에 대한 공개키만 등록
+
+**문제**
+
+공개키를 동적으로 사용하기 위해  `NimbusJwtDecoder` 대신 커스텀 하면 좋지만 구현하기 까다로움 (공개키를 가져오기 위한 서비스 클래스 의존 관계 주입으로 코드가 꼬임)
+
+**해결**  
+`JwtAuthenticationProvider` 대신 커스텀해서 decode전 넘어온 토큰 먼저 파싱하고 담긴 정보로 공개키를 가져와서 등록시킨 후 decode 하도록 구현
+
+**단점**
+- 로직의 중복
+    - `JWT parse = JWTParser.*parse*(token);`  decode 클래스에서 호출하는데 공개 키를 가져오기 위해 어쩔 수 없이 `CustomAuthenticationProvider`에서도 호출
+      - `JwtDecoder` 대신 커스텀 방법 더 고민 필요
