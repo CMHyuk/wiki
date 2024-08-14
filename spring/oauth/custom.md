@@ -230,3 +230,35 @@ public JwtDecoder jwtDecoder() throws Exception {
 - 로직의 중복
     - `JWT parse = JWTParser.*parse*(token);`  decode 클래스에서 호출하는데 공개 키를 가져오기 위해 어쩔 수 없이 `CustomAuthenticationProvider`에서도 호출
       - `JwtDecoder` 대신 커스텀 방법 더 고민 필요
+
+- - -
+
+### Access Token 재발급 고려사항
+
+**동작 흐름**  
+`OAuth2RefreshTokenAuthenticationProvider` 클래스에서 refreshToken 조회 후 검증하고 재발급  
+```java
+OAuth2Authorization authorization = this.authorizationService.findByToken(refreshTokenAuthentication.getRefreshToken(), OAuth2TokenType.REFRESH_TOKEN);
+OAuth2Authorization.Token<OAuth2RefreshToken> refreshToken = authorization.getRefreshToken();
+if (!refreshToken.isActive()) {
+		if (this.logger.isDebugEnabled()) {
+		    this.logger.debug(LogMessage.format("Invalid request: refresh_token is not active for registered client '%s'", registeredClient.getId()));
+    }
+        throw new OAuth2AuthenticationException("invalid_grant");
+    } else {
+        Set<String> scopes = refreshTokenAuthentication.getScopes();
+        Set<String> authorizedScopes = authorization.getAuthorizedScopes();
+        if (!authorizedScopes.containsAll(scopes)) {
+				    throw new OAuth2AuthenticationException("invalid_scope");
+        } else {
+            if (this.logger.isTraceEnabled()) {
+			          this.logger.trace("Validated token request parameters");
+            }
+            if (scopes.isEmpty()) {
+					      scopes = authorizedScopes;
+            }
+            DefaultOAuth2TokenContext.Builder tokenContextBuilder = (DefaultOAuth2TokenContext.Builder)((DefaultOAuth2TokenContext.Builder)((DefaultOAuth2TokenContext.Builder)((DefaultOAuth2TokenContext.Builder)((DefaultOAuth2TokenContext.Builder)((DefaultOAuth2TokenContext.Builder)((DefaultOAuth2TokenContext.Builder)DefaultOAuth2TokenContext.builder().registeredClient(registeredClient)).principal((Authentication)authorization.getAttribute(Principal.class.getName()))).authorizationServerContext(AuthorizationServerContextHolder.getContext())).authorization(authorization)).authorizedScopes(scopes)).authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)).authorizationGrant(refreshTokenAuthentication);
+            OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.from(authorization);
+            OAuth2TokenContext tokenContext = ((DefaultOAuth2TokenContext.Builder)tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN)).build();
+            OAuth2Token generatedAccessToken = this.tokenGenerator.generate(tokenContext);
+```
