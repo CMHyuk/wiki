@@ -7,7 +7,7 @@
 **`OAuth2Authorization` 저장 과정**
 
 - `save()` 가 총 3번이 호출
-    1. **로그인** - code는 생성하지 않고 (state는 생성) 그냥 저장
+    1. **로그인** - code는 생성하지 않고 (state는 생성) 그냥 저장 (최초 로그인의 경우에 해당 재로그인은 다름)
     2. **동의 항목 체크** - code를 생성하고 state는 삭제한 후 `OAuth2Authorization` 에 code 담아서 `save()`
         1. **code 생성 과정**
             1.  `OAuth2AuthorizationConsentAuthenticationProvider`에서
