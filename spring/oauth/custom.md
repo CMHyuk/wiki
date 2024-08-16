@@ -132,7 +132,7 @@ SecurityContext context = this.securityContextHolderStrategy.createEmptyContext(
         - ArgumentResovler와 활용 가능
 
 - - -
-### 멀티 테넌트 구조의 경우의 JWKSource
+### 멀티 테넌트 구조의 JWKSource
 
 멀티 테넌트 구조의 경우 테넌트마다 public, private key가 다르기 때문에 런타임 중 각 테넌트에 맞는 키를 사용할 수 있어야 함
 
