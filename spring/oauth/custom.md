@@ -132,7 +132,7 @@ SecurityContext context = this.securityContextHolderStrategy.createEmptyContext(
         - ArgumentResovler와 활용 가능
 
 - - -
-### 멀티 테넌트 구조의 경우의 JWKSource
+### 멀티 테넌트 구조의 JWKSource
 
 멀티 테넌트 구조의 경우 테넌트마다 public, private key가 다르기 때문에 런타임 중 각 테넌트에 맞는 키를 사용할 수 있어야 함
 
@@ -262,3 +262,44 @@ if (!refreshToken.isActive()) {
             OAuth2TokenContext tokenContext = ((DefaultOAuth2TokenContext.Builder)tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN)).build();
             OAuth2Token generatedAccessToken = this.tokenGenerator.generate(tokenContext);
 ```
+
+- - -
+
+### 권한 검증
+**문제점**
+* `hasRole('MASTER')` 적용 x
+  * `JwtAuthenticationProvider`의 token 값에 role이 밑 사진 처럼 들어가서  
+  ![img.png](../../image/roleset.png)
+  * SecurityExpressionRoot 의 hasAnyAuthorityName가 false 로 반환 되어 Access Denied 에러 발생 roleSet에 MASTER가 들어가 있어야 에러가 안 남
+
+* 토큰 생성을 시큐리티에게 위임하면 roleSet에 ROLE_MASTER 가 없어서 에러 발생  
+  ![img.png](../../image/authority.png)
+
+```java
+private boolean hasAnyAuthorityName(String prefix, String... roles) {
+        Set<String> roleSet = this.getAuthoritySet();
+        String[] var4 = roles;
+        int var5 = roles.length;
+
+        for(int var6 = 0; var6 < var5; ++var6) {
+            String role = var4[var6];
+            String defaultedRole = getRoleWithDefaultPrefix(prefix, role);
+            if (roleSet.contains(defaultedRole)) {
+                return true;
+            }
+        }
+        return false;
+}
+```
+
+**해결**
+* 토큰 생성을 role도 담기도록 커스텀
+  * 장점
+    * db조회하지 않고 role 검증 가능 (db 커넥션 최소화)
+  * 단점
+    * 시큐리티 커스텀으로 코드 복잡성 증가
+* 인터셉터를 활용해 db조회해서 role 검증
+  * 장점
+    * 토큰 생성을 커스텀하지 않아도 돼 구현 난이도 쉬움
+  * 단점
+    * 권한 검증이 필요할 때마다 db 조회해야함
