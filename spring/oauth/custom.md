@@ -13,7 +13,7 @@
     2. **동의 항목 체크**- code를 생성하고 state는 삭제한 후`OAuth2Authorization`에 code를 담아`save()`
         1. **code 생성 과정**
             1. `OAuth2AuthorizationConsentAuthenticationProvider`에서`(OAuth2AuthorizationCode)this.authorizationCodeGenerator.generate(tokenContext);`로 생성하고`OAuth2Authorization`에 담아 다시`save()`호출
-    3. **accessToken, refreshToken****발급**- 토큰을 생성해서`OAuth2Authorization`에 담아`save()`호출
+    3. **accessToken, refreshToken 발급**- 토큰을 생성해서`OAuth2Authorization`에 담아`save()`호출
     4. **재 로그인** -`currentAuthorizationConsent`은 null이 아니어서 state는 생성하지 않고, 최초 로그인 시 동의 항목 모두 체크했으면 바로 code 생성하고`save()`호출, 모두 체크하지 않았다면 최초 로그인과 같은 방식으로 code 생성 후`save()`
     5. **토큰 재발급** - 토큰 재생성 후 `save()`
 
