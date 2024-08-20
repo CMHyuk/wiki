@@ -17,6 +17,24 @@
 위 과정을 고려해 `save()` 커스텀 로직 작성
 
 - - -
+`OAuth2AuthorizationConsentAuthenticationProvider` 클래스  
+동의 체크 아무 것도 안 하면 OAuth2AuthorizationService remove 호출
+```java
+if (authorities.isEmpty()) {
+    if (currentAuthorizationConsent != null) {
+        this.authorizationConsentService.remove(currentAuthorizationConsent);
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace("Revoked authorization consent");
+        }
+     }
+         this.authorizationService.remove(authorization);
+         if (this.logger.isTraceEnabled()) {
+             this.logger.trace("Removed authorization");
+         }
+         throwError("access_denied", "client_id", authorizationConsentAuthentication, registeredClient, authorizationRequest);
+ }
+```
+- - -
 
 ### code, state 값 따로 저장 이유
 authorizationService.findByToken(authorizationConsentAuthentication.getState(), STATE_TOKEN_TYPE); 처럼 조회한 후 로직 처리하기 때문에 OAuth2Authorization 에 담겨져 있지만 따로 필드 생성
