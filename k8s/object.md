@@ -1,3 +1,40 @@
+### ConfigMap
+애플리케이션의 설정 값을 컨테이너에 주입하고 싶을 때 사용하는 리소스이다. `ConfigMap`을 사용하면 Pod에서 직접 환경 변수를 관리하지 않고, ConfigMap을 분리할 수 있다. 이를 통해 애플리케이션을 빌드하고 배포할 때 코드와 설정을 분리할 수 있어 더 유연한 구성 관리가 가능하다.
+
+### 주요 개념 및 특징
+
+1. **구성 데이터의 외부화**
+    - 애플리케이션의 구성 데이터를 컨테이너 이미지에서 분리하여 관리할 수 있다. 이렇게 하면 동일한 이미지를 사용하면서도 다른 환경에 대해 다른 설정을 적용할 수 있다.
+2. **구조**
+    - `ConfigMap`은 키-값 쌍의 형태로 데이터를 저장한다. 각 키는 문자열이고, 각 값은 문자열 또는 파일의 내용일 수 있다.
+    - 예를 들어, 데이터베이스 연결 문자열, 외부 API 엔드포인트, 또는 애플리케이션 설정 파일 등을 저장할 수 있다.
+
+```yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authorization-minhyeok-config
+  namespace: KUBE_NAMESPACE
+data:
+#  SPRING_PROFILES_ACTIVE: "dev"
+  ELASTIC_HOST: "10.30.10.19"
+  ELASTIC_PORT: "9200"
+  KUBERNETES_CLUSTER_NAMESPACE: ""
+  JAVA_OPTS: "-Xms2G -Xmx2G"
+  ELASTIC_EXPECTED_HTTP_RESPONSE_TIME_MS: "50"
+  ELASTIC_EXPECTED_REQUEST_PER_SEC: "500"
+  ELASTIC_SOCKET_TIMEOUT_SEC: "60"
+  ELASTIC_CONNECTION_TIMEOUT_SEC: "30"
+  ELASTIC_CONNECTION_REQUEST_TIMEOUT_SEC: "30"
+  ELASTIC_KEEP_ALIVE_STRATEGY_TIME_MIN: "5"
+```
+
+- **`metadata`**
+    - `name`: `ConfigMap`의 이름으로, 이 `ConfigMap`을 참조할 때 사용된다.
+    - `namespace`: `ConfigMap`이 속한 namespace를 지정한다.
+- **`data`**
+    - 이 섹션에는 애플리케이션이 필요로 하는 설정 데이터가 키-값 쌍의 형태로 저장된다. 각 키는 문자열이고, 각 값은 해당 키에 대응하는 설정 값이다.
+
 ### Pod
 
 쿠버네티스에서 가장 기본적인 배포 단위로, 컨테이너를 포함하는 단위이다. 쿠버네티스의 특징 중 하나는 컨테이너를 개별적으로 하나씩 배포하는 것이 아니라 Pod라는 단위로 배포하는데, Pod는 하나 이상의 컨테이너를 포함한다.
