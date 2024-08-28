@@ -1,7 +1,7 @@
 ### 쿠버네티스 구성
 쿠버네티스는 여러 개의 노드로 구성된 클러스터로 이루어져 있다.
 
-![img.png](../../image/component.png)
+![img.png](./../image/component.png)
 
 여기서 Node라는 개념이 나온다.
 
@@ -14,7 +14,7 @@ Master Node에는 클러스터에 관한 전반적인 결정을 수행하고, �
 
 Master Node는 다음과 같은 그림으로 구성되어 있다.
 
-![img.png](../../image/masternode.png)
+![img.png](./../image/masternode.png)
 
 Master Node에는 기본적으로 다음 컴포넌트들을 통해 역할을 수행한다.  
 |컴포넌트 명|역할|
@@ -28,7 +28,7 @@ Master Node에는 기본적으로 다음 컴포넌트들을 통해 역할을 수
 Worker Node에서는 컨테이너화된 애플리케이션을 동작하고 유지시키는 역할을 한다.
 
 Worker Node는 다음과 같은 그림으로 구성되어 있습니다. 
-![img.png](../../image/workernode.png)
+![img.png](./../image/workernode.png)
 
 Worker Node에는 기본적으로 다음 컴포넌트들을 통해 역할을 수행한다.  
 |컴포넌트 명|역할|
