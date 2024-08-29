@@ -17,12 +17,12 @@ Master Node는 다음과 같은 그림으로 구성되어 있다.
 ![img.png](./../image/masternode.png)
 
 Master Node에는 기본적으로 다음 컴포넌트들을 통해 역할을 수행한다.  
-|컴포넌트 명|역할|
-|------|---|
-|kube-apiserve|모든 요청을 처리하는 역할|
-|kube-controller-manager|다양한 컨트롤러(복제/배포/상태 등)를 관리|
-|kube-scheduler|상황에 맞게 적절한 Worker Node를 선택|
-|etcd|클러스터 내의 데이터를 담는 저장소|  
+| 컴포넌트 명 | 역할 | 
+| ------ | --- |
+| kube-apiserve | 모든 요청을 처리하는 역할 |
+| kube-controller-manager | 다양한 컨트롤러(복제/배포/상태 등)를 관리 |
+| kube-scheduler | 상황에 맞게 적절한 Worker Node를 선택 |
+| etcd | 클러스터 내의 데이터를 담는 저장소 |  
 
 ### Worker Node의 필요 요소
 Worker Node에서는 컨테이너화된 애플리케이션을 동작하고 유지시키는 역할을 한다.
@@ -31,8 +31,8 @@ Worker Node는 다음과 같은 그림으로 구성되어 있습니다.
 ![img.png](./../image/workernode.png)
 
 Worker Node에는 기본적으로 다음 컴포넌트들을 통해 역할을 수행한다.  
-|컴포넌트 명|역할|
-|------|---|
-|pod|컨테이너화된 애플리케이션 그룹|
-|kubelet|Node에 할당된 pod의 상태를 체크하고 관리|
-|kube-proxy|pod로 연결되는 네트워크를 관리|
+| 컴포넌트 명 | 역할 |
+| ------ | --- |
+| pod | 컨테이너화된 애플리케이션 그룹 |
+| kubelet | Node에 할당된 pod의 상태를 체크하고 관리 |
+| kube-proxy | pod로 연결되는 네트워크를 관리 |
