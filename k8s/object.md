@@ -40,10 +40,12 @@ data:
 디플로이먼트(Deployment)는 쿠버네티스에서 상태가 없는(stateless) 앱을 배포할 때 사용하는 가장 기본적인 컨트롤러이다. 쿠버네티스가 처음 등장했을 때는 Replication Controller에서 앱을 배포했는데 최근에는 디플로이먼트를 기본적적인 앱 배포에 사용한다.  
 파드와 레플리카셋은 '이력'이라는 개념이 없기 때문에 릴리스 후에 변경이 없는 애플리케이션을 관리하는데 적합하다.  
 
+![img.png](./../image/deployment.png)
+
 즉, Deployment는 ReplicaSet의 상위 개념으로, Pod와 ReplicaSet에 대한 배포를 관리하므로 운영 중에 어플리케이션의 새 버전을 배포해야하거나 부하가 증가하면서 Pod를 추가하는 등 여러 가지 동작을 Deployment로 관리할 수 있다.
 
 **구성**
-```
+```yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -84,6 +86,22 @@ Pod의 경우 동적으로 생성이 되고, 장애가 생기면 자동으로 �
 
 그래서 사용하는 것이 라벨과 라벨 셀렉터라는 개념이다. 서비스를 정의할 때 어떤 Pod를 서비스로 묶을 것인지를 정의하는데, 이를 라벨 셀렉터라고 한다. 각 Pod를 생성할 때 메타데이터 정보 부분에 라벨을 정의할 수 있다. 서비스는 라벨 셀렉터에서 특정 라벨을 가지고 있는 Pod만 선택해 서비스에 묶게 된다.
 
+**구성**
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: authorization-minhyeok-service
+spec:
+  selector:
+    app: authorization-minhyeok
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+```
+
 ---
 
 ### Ingress
@@ -116,7 +134,7 @@ helm install <ingress 컨트롤러 이름 지정> ingress-nginx/ingress-nginx --
 --set controller.ingressClassByName=true \
 ```
 
-**인그레스 리소스**
+**구성**
 ``` yml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
