@@ -36,6 +36,34 @@ data:
     - 이 섹션에는 애플리케이션이 필요로 하는 설정 데이터가 키-값 쌍의 형태로 저장된다. 각 키는 문자열이고, 각 값은 해당 키에 대응하는 설정 값이다.
 
 ---
+### Deployment
+디플로이먼트(Deployment)는 쿠버네티스에서 상태가 없는(stateless) 앱을 배포할 때 사용하는 가장 기본적인 컨트롤러이다. 쿠버네티스가 처음 등장했을 때는 Replication Controller에서 앱을 배포했는데 최근에는 디플로이먼트를 기본적적인 앱 배포에 사용한다.  
+파드와 레플리카셋은 '이력'이라는 개념이 없기 때문에 릴리스 후에 변경이 없는 애플리케이션을 관리하는데 적합하다.  
+
+즉, Deployment는 ReplicaSet의 상위 개념으로, Pod와 ReplicaSet에 대한 배포를 관리하므로 운영 중에 어플리케이션의 새 버전을 배포해야하거나 부하가 증가하면서 Pod를 추가하는 등 여러 가지 동작을 Deployment로 관리할 수 있다.
+
+**구성**
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: demo-container
+          image: nginx:latest
+```
+
+---
 
 ### Pod
 
@@ -71,12 +99,22 @@ Pod의 경우 동적으로 생성이 되고, 장애가 생기면 자동으로 �
 **인그레스 컨트롤러**  
 쿠버네티스 API에 인그레스는 존재하지만 인그레스 컨트롤러는 생성되지 않는다. 클러스터가 어떤 환경이냐에 따라 적용가능한 인그레스 컨트롤러가 달라지기 때문이다.  
 
-![img.png](./../image/ingress4.png)
+![img.png](./../image/ingress4.png)  
 인그레스는 일종의 그릇이다 인그레스가 어떤 방식으로 동작할지는 인그레스 컨트롤러에 따라 달라진다. 인그레스를 동작시킬 구현체가 인그레스 컨트롤러인 것이다. 인그레스는 이런 다형성을 가지기에, 여러 개의 인그레스 컨트롤러를 배포하여 사용할 수 있다.  
+
 여러 개의 인그레스 컨트롤러를 사용하는 경우, 한 가지 인그레스 컨트롤러를 디폴트로 지정해두어야 한다. 만약 인그레스에 인그레스 클래스, 즉 인그레스 컨트롤러가 지정되지 않으면 디폴트로 설정된 인그레스 컨트롤러가 지정되어 사용된다.  
 
 **인그레스 룰**  
 인그레스를 동작시킬 인그레스 컨트롤러가 정해지면 어떤 방식으로 라우팅할지 룰을 정해야한다.
+
+**인그레스 컨트롤러 생성**
+```
+helm install <ingress 컨트롤러 이름 지정> ingress-nginx/ingress-nginx --namespace <설치될 네임스페이스 지정> \
+--set controller.ingressClassResource.name=<리소스이름 지정> \
+--set controller.ingressClassResource.controllerValue="k8s.io/<컨트롤러 값 지정>" \
+--set controller.ingressClassResource.enabled=true \
+--set controller.ingressClassByName=true \
+```
 
 **인그레스 리소스**
 ``` yml
@@ -110,9 +148,10 @@ spec:
 ---
 
 ### 정리
-- **Deployment**는 클러스터 내부에서 애플리케이션을 실행하고 관리한다.
-- **Service**는 애플리케이션을 클러스터 내부 또는 외부에서 접근할 수 있도록 하는 네트워크 엔드포인트를 제공한다.
-- **Ingress**는 클러스터 외부에서 들어오는 HTTP(S) 트래픽을 클러스터 내부의 특정 서비스로 라우팅해준다.
-    - Ingress를 작성하지 않더라도 서비스 자체를 띄우고 포트 포워딩을 통해 서비스에 접속할 수는 있다.
+- **ConfigMap**은 Kubernetes에서 애플리케이션의 설정 데이터를 관리하기 위한 리소스
+- **Deployment**는 클러스터 내부에서 애플리케이션을 실행하고 관리
+- **Service**는 애플리케이션을 클러스터 내부 또는 외부에서 접근할 수 있도록 하는 네트워크 엔드포인트를 제공
+- **Ingress**는 클러스터 외부에서 들어오는 HTTP(S) 트래픽을 클러스터 내부의 특정 서비스로 라우팅
+    - Ingress를 작성하지 않더라도 서비스 자체를 띄우고 포트 포워딩을 통해 서비스에 접속 가능
 
-클러스터의 desired state를 기술한 Deployment, 이를 네트워크 서비스로 노출시키는 Service, 그리고 클러스터 외부에서 클러스터 내부의 서비스로 접근할 수 있게 만들어주는 것이 Ingress이다.
+클러스터의 desired state를 기술한 Deployment, 이를 네트워크 서비스로 노출시키는 Service, 클러스터 외부에서 클러스터 내부의 서비스로 접근할 수 있게 만들어주는 Ingress, 그리고 애플리케이션의 설정 데이터를 관리하여 환경에 따라 설정을 유연하게 적용할 수 있게 해주는 것이 ConfigMap이다.
