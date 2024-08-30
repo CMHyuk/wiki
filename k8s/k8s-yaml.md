@@ -96,3 +96,29 @@ spec:
     - **`targetPort: 8080`**: 실제 파드 내부에서 동작하는 애플리케이션이 사용하는 포트, 서비스는 이 포트로 트래픽을 전달
 - **`type: LoadBalancer`**
     - `LoadBalancer` 타입은 클러스터 외부에서 접근할 수 있는 IP 주소를 자동으로 생성하여 부여, 클라우드 제공자(예: AWS, GCP, Azure) 환경에서는 이 설정을 통해 외부 IP 주소가 할당되어 트래픽을 받아들이고, 이를 클러스터 내부의 파드로 전달
+ 
+### Ingress
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-nginx-minhyeok
+  namespace: dev
+spec:
+  ingressClassName: ingress-nginx-minhyeok
+  rules:
+    - host: ojt-minhyeok-authorization.softcamp.co.kr
+      http:
+        paths:
+          - path: /authorization
+            pathType: Prefix
+            backend:
+              service:
+                name: ojt-minhyeok-authorization
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - minhyeok-authorization.softcamp.co.kr
+      secretName: ca-key-pair
+```
