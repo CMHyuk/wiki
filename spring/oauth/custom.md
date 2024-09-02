@@ -76,17 +76,28 @@ if (this.authorizationConsentRequired.test(authenticationContextBuilder.build())
 
 - - -
 
-**accessToken 저장 고려 사항**
+### accessToken 저장 고려 사항
 
-토큰 생성, 저장 호출 클래스
+**토큰 생성, 저장 호출 클래스**
 `OAuth2AuthorizationCodeAuthenticationProvider` 
 
+#### 토큰 최초 생성
 1. 로그인, 동의 화면에 거쳐서 만들어진 code로 `OAuth2Authorization` 가져옴
 2. code가 이미 사용된 코드인지, 기간 만료됐는지 확인
 3. accessToken 생성 후 `registeredClient`가 가지고 있는 `AuthorizationGrantType`을 체크하며 존재하면 refreshToken, idToken 생성
 4. code는 사용했으므로 메타데이터 값 false에서 true로 바꾼 후 `save()` 호출
 
 토큰 저장 시 만료 된 코드로 저장되지 않게 하려면 db에 저장된 `OAuth2Authorization` 의 code 메타데이터 값을 확인하고 false면 저장하고 true면 저장 안 되도록 한 후 시큐리티에서 넘겨준 `OAuth2Authorization`를 db에 업데이트
+
+#### 토큰 재발급
+1. `refreshToken.isActive()` 확인
+1. `OAuth2Authorization`에 담긴 refreshToken으로 db에 있는지 확인
+2. 존재하면 새로 발급된 토큰 저장
+
+**토큰 재발급 참고**  
+
+code는 한 번밖에 사용하지 못하는데, 만약 이미 사용한 code로 토큰 발급을 요청하면 accessToken, refreshToken 모두 invalidated = true로 바꿈
+따라서 기존 발급된 refreshToken으로 acccessToken 재발급 불가능
 
 **토큰 생성도 커스텀 한다면 아래 참고**
 
