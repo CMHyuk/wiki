@@ -9,6 +9,12 @@ kubectl describe pod <pod-name> -n <namespace>
 kubectl describe pod ojt-minhyeok-authorization-84564db5bf-zghpz -n dev
 ```
 
+* 특정 Pod 환경 변수 조회
+```
+kubectl exec -it <pod-name> -n dev -- /bin/sh
+printenv | grep {조회할 값 변수}
+```
+
 * 특정 Deployment 상세 정보
 ```
 kubectl describe deployment <deployment-name> -n <namespace>
@@ -19,9 +25,14 @@ kubectl describe deployment <deployment-name> -n <namespace>
 kubectl get pods -n <namespace>
 ```
 
-* 특정 파드의 YAML 확인
+* 특정 Pod YAML 확인
 ```
 kubectl get pod <pod-name> -n <namespace> -o yaml
+```
+
+* Ingress 조회
+```
+kubectl get ingress -n <namespace>
 ```
 
 * 포트 포워딩
