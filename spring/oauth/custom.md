@@ -335,3 +335,30 @@ private boolean hasAnyAuthorityName(String prefix, String... roles) {
     * 토큰 생성을 커스텀하지 않아도 돼 구현 난이도 쉬움
   * 단점
     * 권한 검증이 필요할 때마다 db 조회해야함
+   
+  ### 인터셉터를 활용한 role 검증 구현
+  ```java
+  private boolean handleHandlerMethod(HandlerMethod handler) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+    	// 추가 필요 로직 작성
+        return true;
+    }
+  ```
+
+  **동작 원리**
+  1. 토큰을 검증한다.
+  2. 이상이 없으면 `SecurityContextHolder`에 토큰에 담긴 값을 넣는다.
+ 
+  **토큰 검증**  
+  `X509CertificateThumbprintValidator` 클래스, `JwtTimestampValidator` 클래스에서 토큰 검증
+  ``` java
+  // X509CertificateThumbprintValidator 클래스
+  public OAuth2TokenValidatorResult validate(Jwt jwt) {
+  	// Thumbprint(인증서) 검증
+  }
+  // JwtTimestampValidator 클래스
+  public OAuth2TokenValidatorResult validate(Jwt jwt) {
+  	//토큰 만료 검증 로직
+  }
+  ```
