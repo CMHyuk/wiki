@@ -99,6 +99,9 @@ if (this.authorizationConsentRequired.test(authenticationContextBuilder.build())
 code는 한 번밖에 사용하지 못하는데, 만약 이미 사용한 code로 토큰 발급을 요청하면 accessToken, refreshToken 모두 invalidated = true로 바꿈
 따라서 기존 발급된 refreshToken으로 acccessToken 재발급 불가능
 
+ 
+로그인 시 토큰 무제한 발급이 아닌 정해진 횟수까지 발급 받을 수 있도록 로직 구현
+
 **토큰 생성도 커스텀 한다면 아래 참고**
 
 https://garnier.wf/blog/2024/02/12/spring-auth-server-tokens.html
