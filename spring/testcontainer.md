@@ -17,7 +17,8 @@ spring:
       show_sql: true
 ```
 
-**코드에서 사용**
+**NoSql - 코드에서 사용**
+* application.yml에서 설정할 수 없고 따로 코드로 설정을 해야한다.
 ```java
 @Slf4j
 @Testcontainers
