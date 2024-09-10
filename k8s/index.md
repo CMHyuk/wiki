@@ -5,3 +5,4 @@
 - [kubectl](kubectl.md)
 - [component](component.md)
 - [pv, pvc](pvpvc.md)
+- [troubleshooting](troubleshooting.md)
