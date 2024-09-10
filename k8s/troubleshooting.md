@@ -14,11 +14,10 @@ com.github.dockerjava.api.exception.InternalServerErrorException: Status 500: {"
 ```
 
 ### 원인
-| NAME | READY | STATUS | RESTARTS | AGE | IP | NODE | NOMINATED NODE | READINESS GATES |
-|------|-------|--------|----------|-----|----|------|----------------|-----------------|
-| Authorization    | 0/4   | ContainerCreating | 0  | 29s | <none> | dev-kubernetes-worker-3 | <none> | <none> |
-| Resource | 6/6   | Running | 0  | 69s | 10.42.2.155 | dev-kubernetes-master-3 | <none> | <none> |
-
+| NAME | READY | STATUS | RESTARTS | AGE | IP | NODE |
+| --- | --- | --- | --- | --- | --- | --- |
+| Authorization    | 0/4   | ContainerCreating | 0  | 29s | <none> | dev-kubernetes-worker-3 |
+| Resource | 6/6   | Running | 0  | 69s | 10.42.2.155 | dev-kubernetes-master-3 |
 
 기존에는 동일한 노드에서 리소스와 인가 서버가 실행되었기 때문에, 이미지가 이미 캐싱되어 있어 문제가 없었다. 하지만 이번에는 서로 다른 노드에서 실행되면서, 인가 서버 컨테이너가 레지스트리에서 이미지를 pull해야 했고, 이 과정에서 권한 문제가 발생했다.
 
