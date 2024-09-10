@@ -14,6 +14,7 @@ com.github.dockerjava.api.exception.InternalServerErrorException: Status 500: {"
 ```
 
 ### 원인
+
 | NAME | READY | STATUS | RESTARTS | AGE | IP | NODE |
 | --- | --- | --- | -- | --- | --- | --- |
 | Authorization | 0/4 | ContainerCreating | 0 | 29s | <none> | dev-kubernetes-worker-3 |
