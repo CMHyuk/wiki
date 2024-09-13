@@ -28,12 +28,12 @@ SP가 IdP로 인증 요청을 보낼 때 사용되는 XML 기반 메시지
 ```
 
 **AuthnRequest**  
-* SAML 프로토콜에 따라 SP가 IdP로 보내는 인증 요청이다.
-   * AssertionConsumerServiceURL: SAML Response를 받을 SP의 엔드포인트 URL
-   * Destination: SAML 요청을 처리할 IdP의 SSO URL
-   * ProtocolBinding SAML 응답을 받을 방식, 여기서는 HTTP-POST 방식이 사용
-   * ID: 요청의 고유 식별자
-   * IssueInstant: 요청이 생성된 시각
+* SAML 프로토콜에 따라 SP가 IdP로 보내는 인증 요청
+   * AssertionConsumerServiceURL - SAML Response를 받을 SP의 엔드포인트 URL
+   * Destination - SAML 요청을 처리할 IdP의 SSO URL
+   * ProtocolBinding SAML - 응답을 받을 방식, 여기서는 HTTP-POST 방식이 사용
+   * ID - 요청의 고유 식별자
+   * IssueInstant - 요청이 생성된 시각
      
 **Issuer**
 * SP의 Entity ID로, SP를 식별하는 URL
@@ -110,11 +110,9 @@ IdP가 SP로 사용자의 인증 정보를 전달할 때 사용하는 XML 메시
 * 이 응답을 발행한 IdP의 Entity ID로, IdP를 식별하는 URL
 
 **Status**  
-* 요청 결과, urn:oasis:names:tc:SAML:2.0:status:Success는 성공을 의미
+* 요청 결과, `urn:oasis:names:tc:SAML:2.0:status:Success`는 성공을 의미
 
 **Assertion**
-* 사용자의 인증 정보를 포함한 데이터
-
 * Issuer - Assertion을 발행한 IdP의 식별자  
 * Subject - 인증된 사용자, 이 예시에서는 이메일 주소(user@example.com)로 사용자 식별자를 제공  
 * SubjectConfirmation - Assertion이 특정 SP에만 사용되도록 제한하는 정보, NotOnOrAfter는 유효기간을 나타냄  
