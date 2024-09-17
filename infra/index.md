@@ -1,2 +1,2 @@
 ## INFRA
-- [CI/CD](cicd.md)
+- [Deploy](deploy)

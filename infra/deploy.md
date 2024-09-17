@@ -1,4 +1,4 @@
-## Ubuntu 도커 CI, CD
+### Ubuntu 도커 CI, CD
 1. Ec2 Ubuntu 생성
 2. Ec2 생성 시 발급한 pem 키 이동`mv ~/Downloads/ .pem ~/.ssh/`
 3. `chmod 600 {pem키 이름}.pem`
@@ -80,3 +80,7 @@ jobs:
             sudo docker image prune -f
             sudo docker volume prune -f
 ```
+
+### 도메인.co.kr:8080에서 8080 제거 방법
+* TCP 80번 포트로 들어오는 모든 트래픽 8080번 포트로 리다이렉트  
+  * `sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080`
