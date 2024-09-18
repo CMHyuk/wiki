@@ -119,3 +119,42 @@ IdP가 SP로 사용자의 인증 정보를 전달할 때 사용하는 XML 메시
 * Conditions - Assertion이 유효한 시간 범위와, Assertion이 유효한 대상(SP)을 명시  
 * AudienceRestriction - 이 Assertion이 유효한 SP를 명시, 여기서는 https://sp.example.com이 유효한 SP로 설정
 * AuthnStatement - 사용자가 언제 인증되었는지, 어떤 인증 방법(여기서는 PasswordProtectedTransport)을 사용했는지를 나타냄
+
+- - -
+### SAML Response 검증
+1. **SAML Response 수신**  
+   사용자가 인증을 마치고 나면, IdP는 SAML Response를 사용자의 브라우저를 통해 SP의 ACS URL로 전송
+   이 응답은 보통 HTTP POST 방식으로 전송되며, SAML Response는 XML 형식으로 Base64로 인코딩되어 전달
+2. **SAML Response 디코딩**  
+   SP는 HTTP POST 요청으로 전달된 SAML Response를 Base64 디코딩하여 원래의 XML 형태로 변환
+   이 XML은 SAML 표준에 맞춰 구성되어 있으며, 인증 관련 정보(사용자의 ID, 인증 세부 사항 등)가 포함됨
+3. **SAML 서명 검증 (Signature Verification)**  
+   SP는 이 서명이 IdP의 공개 키로 유효한지 검증을 통해 SAML Response가 IdP에서 온 것이며, 중간에 변조되지 않았음을 확인
+   이 과정에서 SP는 IdP의 인증서(공개 키)를 사용해 서명을 검증, 이 인증서는 보통 SAML 메타데이터를 통해 사전에 교환
+   서명 검증 실패 시: 만약 서명이 유효하지 않다면, SAML Response는 무효화되고 사용자 인증은 실패로 처리
+4. **SAML Assertion 검증**  
+   SAML Response 내부에는 SAML Assertion이 포함
+   Assertion의 중요한 필드들을 검증하는 과정이 포함 
+   * IssueInstant: Assertion이 발행된 시간, 이 값이 너무 오래된 경우(예: 발행된 지 오래되거나, 만료 시간이 지난 경우) 요청이 무효화
+   * Conditions: Assertion에 적용되는 조건, 예를 들어 Assertion이 유효한 시간 범위(NotBefore, NotOnOrAfter 필드)나 특정 대상(SP)에게만 유효하도록 제한된 경우
+   * AudienceRestriction: Assertion이 특정 SP에만 유효하도록 제한, 이 필드는 SAML Assertion이 이 SP를 위한 것인지 확인하는 데 사용 
+   * Destination: SAML Response가 도착한 목적지(즉, ACS URL)가 Assertion의 Destination 필드에 명시된 값과 일치하는지 검증
+5. **사용자 정보 추출 및 검증**  
+   Assertion 내에서 사용자 정보(Subject)를 추출, 이 정보에는 사용자 ID, 이메일 또는 기타 인증된 정보가 포함
+   SP는 이 사용자 정보가 SP 시스템에서 유효한지 추가로 검증 가능
+   예를 들어, 해당 사용자 ID가 SP 시스템에 존재하는지, 추가적인 권한 또는 접근 제어가 필요한지 확인 가능
+6. **세션 생성**  
+   SAML Assertion이 검증되면, SP는 사용자에게 세션을 생성하고 사용자를 서비스에 로그인 상태로 유지.
+   이후 사용자는 별도의 로그인 절차 없이 SP의 서비스를 사용 가능
+7. **검증 실패 시 처리**  
+   만약 검증 과정에서 문제가 발생하면(예: 서명이 유효하지 않거나, Assertion이 만료되었거나, Audience가 일치하지 않는 경우), SP는 인증 요청을 거부하고 사용자를 로그인 페이지로 리다이렉트하거나 오류 메시지를 표시
+
+**SAML Response 검증 요약**  
+* Base64 디코딩: SAML Response를 Base64에서 디코딩하여 XML로 변환
+* 전자 서명 검증: SAML Response가 IdP에서 발행되었고 변조되지 않았는지 확인
+* SAML Assertion 검증
+  * 발행 시간(IssueInstant)과 만료 시간(NotOnOrAfter) 확인 
+  * Audience(SP)가 올바른지 확인
+  * Destination이 ACS URL과 일치하는지 확인
+  * 사용자 정보 확인: Assertion 내의 사용자 정보 추출 및 검증 
+  * 세션 생성: SAML Assertion이 검증되면 사용자에게 세션 생성
