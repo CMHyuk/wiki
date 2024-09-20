@@ -143,6 +143,7 @@ public SAMLMessageContext sendMessage(SAMLMessageContext samlContext, boolean si
 
 ### SAML Response 검증 
 * WebSSOProfileConsumerImpl 클래스  
+
 ```java
 public SAMLCredential processAuthenticationResponse(SAMLMessageContext context) {
     AuthnRequest request = null;
