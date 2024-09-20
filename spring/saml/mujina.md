@@ -69,7 +69,8 @@ public void sendAuthnResponse(SAMLPrincipal principal,
 }
 ```
 
-### ForceAuthnFilter
+### 인증 정보 초기화 
+* ForceAuthnFilter 클래스
 
 ![img.png](../../image/mujina1.PNG)  
 ![img.png](../../image/mujina2.PNG)
