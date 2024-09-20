@@ -1,6 +1,5 @@
 ## Idp
-![img.png](../../image/mujina1.PNG)  
-
+![img.png](../../image/mujina1.PNG)
 ![img.png](../../image/mujina2.PNG)  
 ![img.png](../../image/mujina3.PNG)  
 
