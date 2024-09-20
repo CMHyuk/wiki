@@ -1,6 +1,6 @@
 ## Idp
 ### SAML Request 처리, SAML Response 생성
-* SAMLMessageHandler 클래스
+* `SAMLMessageHandler` 클래스
 
 `SAML Request 추출 & 검증`
 ```java
@@ -70,8 +70,8 @@ public void sendAuthnResponse(SAMLPrincipal principal,
 ```
 
 ### 인증 정보 초기화 
-* ForceAuthnFilter 클래스
-  * OncePerRequestFilter를 상속
+* `ForceAuthnFilter` 클래스
+  * `OncePerRequestFilter`를 상속
 
 ![img.png](../../image/mujina1.PNG)  
 ![img.png](../../image/mujina2.PNG)
@@ -99,7 +99,7 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 - - -
 ## SP  
 ### IdP의 MetadataUrl 등록
-* WebSecurityConfigurer 클래스
+* `WebSecurityConfigurer` 클래스
 * xml 파일 경로를 등록 `classpath:metadata/mujina.local.idp.metadata.xml`
 
 ```java
@@ -119,7 +119,7 @@ public MetadataProvider identityProvider() {
 ```
 
 ### SP -> IdP SAML Request 전송
-* SAMLProcessorImpl 클래스
+* `SAMLProcessorImpl` 클래스
   * Mujina에서는 `ConfigurableSAMLProcessor`로 커스텀
 
 ```java
@@ -143,9 +143,9 @@ public SAMLMessageContext sendMessage(SAMLMessageContext samlContext, boolean si
 ```
 
 ### Signature 검증 흐름
-* BaseSAMLSimpleSignatureSecurityPolicyRule 클래스
-  * SAMLProcessingFilter의 populateSecurityPolicy 호출 -> SAMLProcessorImpl에서 SecurityPolicy 추가 -> BaseMessageDecoder의 decode 호출 
-* setInboundSAMLMessageAuthenticated
+* `BaseSAMLSimpleSignatureSecurityPolicyRule` 클래스
+  * `SAMLProcessingFilter`의 `populateSecurityPolicy` 호출 -> `SAMLProcessorImpl`에서 `SecurityPolicy` 추가 -> `BaseMessageDecoder`의 `decode` 호출 
+* `setInboundSAMLMessageAuthenticated`
   * SAML 메시지 검증 여부 속성 (true면 인증된 메시지)
 
 ```java
@@ -173,7 +173,7 @@ private void doEvaluate(byte[] signature, byte[] signedContent, String algorithm
 ```
 
 ### SAML Response 검증 
-* WebSSOProfileConsumerImpl 클래스  
+* `WebSSOProfileConsumerImpl` 클래스  
 
 ```java
 public SAMLCredential processAuthenticationResponse(SAMLMessageContext context) {
