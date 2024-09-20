@@ -1,4 +1,74 @@
 ## Idp
+### SAML Request 처리, SAML Response 생성
+* SAMLMessageHandler 클래스
+
+`SAML Request 추출 & 검증`
+```java
+public SAMLMessageContext extractSAMLMessageContext(HttpServletRequest request, HttpServletResponse response, boolean postRequest) throws ValidationException, SecurityException, MessageDecodingException, MetadataProviderException {
+    SAMLMessageContext messageContext = new SAMLMessageContext();
+
+    proxiedSAMLContextProviderLB.populateGenericContext(request, response, messageContext);
+
+    messageContext.setSecurityPolicyResolver(resolver);
+
+    SAMLMessageDecoder samlMessageDecoder = samlMessageDecoder(postRequest);
+    samlMessageDecoder.decode(messageContext);
+
+    SAMLObject inboundSAMLMessage = messageContext.getInboundSAMLMessage();
+
+    AuthnRequest authnRequest = (AuthnRequest) inboundSAMLMessage;
+    //lambda is poor with Exceptions
+    for (ValidatorSuite validatorSuite : validatorSuites) {
+        validatorSuite.validate(authnRequest);
+     }
+    return messageContext;
+}
+```
+
+`SAML Response 생성 & 전송`
+```java
+public void sendAuthnResponse(SAMLPrincipal principal,
+                                  String authnContextClassRefValue,
+                                  HttpServletResponse response) throws MarshallingException, SignatureException, MessageEncodingException {
+    Status status = buildStatus(StatusCode.SUCCESS_URI);
+
+    String entityId = idpConfiguration.getEntityId();
+    Credential signingCredential = resolveCredential(entityId);
+
+    Response authResponse = buildSAMLObject(Response.class, Response.DEFAULT_ELEMENT_NAME);
+    Issuer issuer = buildIssuer(entityId);
+
+    authResponse.setIssuer(issuer);
+    authResponse.setID(SAMLBuilder.randomSAMLId());
+    authResponse.setIssueInstant(new DateTime());
+    authResponse.setInResponseTo(principal.getRequestID());
+
+    Assertion assertion = buildAssertion(principal, authnContextClassRefValue, status, entityId);
+    signAssertion(assertion, signingCredential);
+
+    authResponse.getAssertions().add(assertion);
+    authResponse.setDestination(principal.getAssertionConsumerServiceURL());
+
+    authResponse.setStatus(status);
+
+    Endpoint endpoint = buildSAMLObject(Endpoint.class, SingleSignOnService.DEFAULT_ELEMENT_NAME);
+    endpoint.setLocation(principal.getAssertionConsumerServiceURL());
+
+    HttpServletResponseAdapter outTransport = new HttpServletResponseAdapter(response, false);
+
+    BasicSAMLMessageContext messageContext = new BasicSAMLMessageContext();
+
+    messageContext.setOutboundMessageTransport(outTransport);
+    messageContext.setPeerEntityEndpoint(endpoint);
+    messageContext.setOutboundSAMLMessage(authResponse);
+    messageContext.setOutboundSAMLMessageSigningCredential(signingCredential);
+
+    messageContext.setOutboundMessageIssuer(entityId);
+    messageContext.setRelayState(principal.getRelayState());
+    encoder.encode(messageContext);
+}
+```
+
 ![img.png](../../image/mujina1.PNG)  
 ![img.png](../../image/mujina2.PNG)
 ![img.png](../../image/mujina3.PNG)  
