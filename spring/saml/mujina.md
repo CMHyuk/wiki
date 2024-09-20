@@ -142,6 +142,36 @@ public SAMLMessageContext sendMessage(SAMLMessageContext samlContext, boolean si
 }
 ```
 
+### Signature 검증 흐름
+* BaseSAMLSimpleSignatureSecurityPolicyRule 클래스
+  * SAMLProcessingFilter의 populateSecurityPolicy 호출 -> SAMLProcessorImpl에서 SecurityPolicy 추가 -> BaseMessageDecoder의 decode 호출 
+* setInboundSAMLMessageAuthenticated
+  * SAML 메시지 검증 여부 속성 (true면 인증된 메시지)
+
+```java
+private void doEvaluate(byte[] signature, byte[] signedContent, String algorithmURI, HttpServletRequest request, SAMLMessageContext samlMsgCtx) {
+    List<Credential> candidateCredentials = this.getRequestCredentials(request, samlMsgCtx);
+    String contextIssuer = samlMsgCtx.getInboundMessageIssuer();
+    if (contextIssuer != null) {
+        this.log.debug("Attempting to validate SAML protocol message simple signature using context issuer: {}", contextIssuer);
+        CriteriaSet criteriaSet = this.buildCriteriaSet(contextIssuer, samlMsgCtx);
+        // signature 검증
+        if (this.validateSignature(signature, signedContent, algorithmURI, criteriaSet, candidateCredentials)) {
+            this.log.info("Validation of request simple signature succeeded");
+            if (!samlMsgCtx.isInboundSAMLMessageAuthenticated()) {
+                this.log.info("Authentication via request simple signature succeeded for context issuer entity ID {}", contextIssuer);
+                // signature 검증 완료 설정
+                samlMsgCtx.setInboundSAMLMessageAuthenticated(true);
+            }
+        } else {
+            this.log.warn("Validation of request simple signature failed for context issuer: {}", contextIssuer);
+            throw new SecurityPolicyException("Validation of request simple signature failed for context issuer");
+        }
+    }
+        ...
+}
+```
+
 ### SAML Response 검증 
 * WebSSOProfileConsumerImpl 클래스  
 
