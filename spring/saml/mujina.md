@@ -78,10 +78,19 @@ public void sendAuthnResponse(SAMLPrincipal principal,
 ![img.png](../../image/mujina3.PNG)
 
 ```java
-
 @Override
 protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
-    ...
+    String servletPath = request.getServletPath();
+    if (servletPath == null || !servletPath.endsWith("SingleSignOnService") || request.getMethod().equalsIgnoreCase("GET")) {
+        chain.doFilter(request, response);
+        return;
+    }
+    SAMLMessageContext messageContext;
+    try {
+        messageContext = samlMessageHandler.extractSAMLMessageContext(request, response, request.getMethod().equalsIgnoreCase("POST"));
+    } catch (Exception e) {   
+      throw new IllegalArgumentException(e);
+    }
     AuthnRequest authnRequest = (AuthnRequest) messageContext.getInboundSAMLMessage();
     if (authnRequest.isForceAuthn()) {
         SecurityContextHolder.getContext().setAuthentication(null);
