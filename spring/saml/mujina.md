@@ -71,6 +71,7 @@ public void sendAuthnResponse(SAMLPrincipal principal,
 
 ### 인증 정보 초기화 
 * ForceAuthnFilter 클래스
+  * OncePerRequestFilter를 상속
 
 ![img.png](../../image/mujina1.PNG)  
 ![img.png](../../image/mujina2.PNG)
