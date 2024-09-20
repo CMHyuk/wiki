@@ -98,9 +98,9 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 ## SP  
 ### IdP의 MetadataUrl 등록
 * WebSecurityConfigurer 클래스
-* xml 파일 경로를 등록
+* xml 파일 경로를 등록 `classpath:metadata/mujina.local.idp.metadata.xml`
+
 ```java
-// classpath:metadata/mujina.local.idp.metadata.xml
 @Value("${sp.idp_metadata_url}")
 private String identityProviderMetadataUrl;
 
