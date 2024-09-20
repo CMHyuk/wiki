@@ -25,31 +25,28 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 
 - - -
 ## SP  
-### WebSSOProfileConsumerImpl
-* SAML Response 검증 클래스  
+### IdP의 MetadataUrl 등록
+* WebSecurityConfigurer 클래스
+* xml 파일 경로를 등록
 ```java
-public SAMLCredential processAuthenticationResponse(SAMLMessageContext context) {
-    AuthnRequest request = null;
-    SAMLObject message = context.getInboundSAMLMessage();
-    if (!(message instanceof Response)) {
-        throw new SAMLException("Message is not of a Response object type");
-    } else {
-        Response response = (Response) message;
-        StatusCode statusCode = response.getStatus().getStatusCode();
-        if (!"urn:oasis:names:tc:SAML:2.0:status:Success".equals(statusCode.getValue())) {
-            StatusMessage statusMessage = response.getStatus().getStatusMessage();
-            String statusMessageText = null;
-            if (statusMessage != null) {
-                statusMessageText = statusMessage.getMessage();
-            }
-        }
-    }
-    ...
+// classpath:metadata/mujina.local.idp.metadata.xml
+@Value("${sp.idp_metadata_url}")
+private String identityProviderMetadataUrl;
+
+@Bean
+public MetadataProvider identityProvider() {
+    Resource resource = defaultResourceLoader.getResource(identityProviderMetadataUrl);
+    ResourceMetadataProvider resourceMetadataProvider = new ResourceMetadataProvider(resource);
+    resourceMetadataProvider.setParserPool(parserPool());
+    ExtendedMetadataDelegate extendedMetadataDelegate = new ExtendedMetadataDelegate(resourceMetadataProvider, extendedMetadata());
+    extendedMetadataDelegate.setMetadataTrustCheck(true);
+    extendedMetadataDelegate.setMetadataRequireSignature(true);
+    return extendedMetadataDelegate;
 }
 ```
 
-### SAMLProcessorImpl
-* SP -> IdP SAML Request 전송 클래스
+### SP -> IdP SAML Request 전송
+* SAMLProcessorImpl 클래스
   * Mujina에서는 `ConfigurableSAMLProcessor`로 커스텀
 
 ```java
@@ -69,5 +66,28 @@ public SAMLMessageContext sendMessage(SAMLMessageContext samlContext, boolean si
     assertionConsumerService.setLocation(spConfiguration.getAssertionConsumerServiceURL());
 
     return super.sendMessage(samlContext, spConfiguration.isNeedsSigning(), binding);
+}
+```
+
+### SAML Response 검증 
+* WebSSOProfileConsumerImpl 클래스  
+```java
+public SAMLCredential processAuthenticationResponse(SAMLMessageContext context) {
+    AuthnRequest request = null;
+    SAMLObject message = context.getInboundSAMLMessage();
+    if (!(message instanceof Response)) {
+        throw new SAMLException("Message is not of a Response object type");
+    } else {
+        Response response = (Response) message;
+        StatusCode statusCode = response.getStatus().getStatusCode();
+        if (!"urn:oasis:names:tc:SAML:2.0:status:Success".equals(statusCode.getValue())) {
+            StatusMessage statusMessage = response.getStatus().getStatusMessage();
+            String statusMessageText = null;
+            if (statusMessage != null) {
+                statusMessageText = statusMessage.getMessage();
+            }
+        }
+    }
+    ...
 }
 ```
