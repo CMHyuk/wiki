@@ -4,6 +4,18 @@
 ![img.png](../../image/mujina3.PNG)  
 
 ### ForceAuthnFilter
+```java
+
+@Override
+protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
+    ...
+    AuthnRequest authnRequest = (AuthnRequest) messageContext.getInboundSAMLMessage();
+    if (authnRequest.isForceAuthn()) {
+        SecurityContextHolder.getContext().setAuthentication(null);
+    }
+    chain.doFilter(request, response);
+}
+```
 - **`forceAuthn = true`**
     - 사용자가 **IdP에서 인증된 세션**을 가지고 있어도, SAML 요청이 들어올 때마다 **무조건 재인증**을 요구한다.
     - 사용자가 **세션을 변경하거나** 브라우저를 새로 열거나 다른 세션에서 액세스할 때, 무조건 **다시 로그인**을 해야한다.
@@ -16,13 +28,13 @@
 ### WebSSOProfileConsumerImpl
 * SAML Response 검증 클래스  
 ```java
-public SAMLCredential processAuthenticationResponse(SAMLMessageContext context) throws SAMLException, SecurityException, ValidationException, DecryptionException {
+public SAMLCredential processAuthenticationResponse(SAMLMessageContext context) {
     AuthnRequest request = null;
     SAMLObject message = context.getInboundSAMLMessage();
     if (!(message instanceof Response)) {
         throw new SAMLException("Message is not of a Response object type");
     } else {
-        Response response = (Response)message;
+        Response response = (Response) message;
         StatusCode statusCode = response.getStatus().getStatusCode();
         if (!"urn:oasis:names:tc:SAML:2.0:status:Success".equals(statusCode.getValue())) {
             StatusMessage statusMessage = response.getStatus().getStatusMessage();
@@ -30,6 +42,8 @@ public SAMLCredential processAuthenticationResponse(SAMLMessageContext context) 
             if (statusMessage != null) {
                 statusMessageText = statusMessage.getMessage();
             }
-      ...
+        }
+    }
+    ...
 }
 ```
