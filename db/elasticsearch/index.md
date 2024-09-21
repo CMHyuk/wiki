@@ -4,3 +4,4 @@
 - [keyword vs text](keywordtext.md)
 - [term vs match](search.md)
 - [invertedindex](invertedindex.md)
+- [Text Analysis](textanalysis.md)
