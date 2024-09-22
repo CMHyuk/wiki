@@ -5,3 +5,4 @@
 - [term vs match](search.md)
 - [invertedindex](invertedindex.md)
 - [Text Analysis](textanalysis.md)
+- [index vs invertedindex](indexinvertedindex.md)
