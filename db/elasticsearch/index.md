@@ -6,3 +6,4 @@
 - [invertedindex](invertedindex.md)
 - [Text Analysis](textanalysis.md)
 - [index vs invertedindex](indexinvertedindex.md)
+- [characterfilter](characterfilter.md)
