@@ -8,3 +8,4 @@
 - [index vs invertedindex](indexinvertedindex.md)
 - [characterfilter](characterfilter.md)
 - [tokenizer](tokenizer.md)
+- [tokenfilter](tokenfilter.md)
