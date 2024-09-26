@@ -114,3 +114,64 @@ GET my_stop/_analyze
 
 **Result**  
 [”Around”, “World”, “Days”]
+
+- - -
+
+### Synonym
+검색 서비스에 따라서 **동의어** 검색을 제공해야 하는 경우가 있다. 예를 들면 클라우드 서비스 관련 정보를 검색하는 시스템에서 "AWS" 라는 단어를 검색했을 때 "Amazon" 또는 한글 "아마존" 도 같이 검색을 하도록 하면 관련된 정보를 더 많이 찾을 수 있을 것이다. 
+이 때 **Synonym** 토큰 필터를 사용하면 텀의 동의어 저장이 가능하다.  
+
+동의어를 설정하는 옵션은 `synonyms` 항목에서 직접 동의어 목록을 입력하는 방법과 동의어 사전 파일을 만들어 `synonyms_path` 로 지정하는 방법이 있다. 동의어 사전 명시 규칙에는 다음의 것들이 있다.  
+- `"A, B => C"` : 왼쪽의 A, B 대신 오른쪽의 C 텀을 저장한다. A, B 로는 C의 검색이 가능하지만 C 로는 A, B 가 검색되지 않는다.
+- `"A, B"` : A, B 각 텀이 A 와 B 두개의 텀을 모두 저장한다. A 와 B 모두 서로의 검색어로 검색이 된다.  
+
+```
+PUT my_synonym
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_syn": {
+          "tokenizer": "whitespace",
+          "filter": [
+            "lowercase",
+            "syn_aws"
+          ]
+        }
+      },
+      "filter": {
+        "syn_aws": {
+          "type": "synonym",
+          "synonyms": [
+            "amazon => aws"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "message": {
+        "type": "text",
+        "analyzer": "my_syn"
+      }
+    }
+  }
+}
+```
+
+```
+PUT my_synonym/_doc/1
+{ "message" : "Amazon Web Service" }
+PUT my_synonym/_doc/2
+{ "message" : "AWS" }
+```
+
+```
+GET my_synonym/_termvectors/1?fields=message
+```
+
+**Result**  
+["Amazon Web Service"가 amazon 대신 "aws", "web", "service"]
+
+ 출처 - https://esbook.kimjmin.net/06-text-analysis/6.6-token-filter/6.6.1-lowercase-uppercase
