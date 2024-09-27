@@ -174,4 +174,40 @@ GET my_synonym/_termvectors/1?fields=message
 **Result**  
 ["Amazon Web Service"가 amazon 대신 "aws", "web", "service"]
 
- 출처 - https://esbook.kimjmin.net/06-text-analysis/6.6-token-filter/6.6.1-lowercase-uppercase
+- - -
+### Unique
+"white fox, white rabbit, white bear" 같은 문장을 분석하면 "white" 텀은 총 3번 저장이 된다.  
+역 색인에는 텀이 1개만 있어도 텀을 포함하는 도큐먼트를 가져올 수 있기 때문에 중복되는 텀들은 삭제해도 된다.  
+unique 토큰 필터를 사용해서 중복되는 텀 들은 하나만 저장하도록 할 수 있다.  
+
+```
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [
+    "lowercase"
+  ],
+  "text": [
+    "white fox, white rabbit, white bear"
+  ]
+}
+```
+
+```
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [
+    "lowercase",
+    "unique"
+  ],
+  "text": [
+    "white fox, white rabbit, white bear"
+  ]
+}
+```
+
+**Result**  
+["white", "fox", "rabbit", "bear"]
+
+ 출처 -  https://esbook.kimjmin.net/06-text-analysis/6.6-token-filter
