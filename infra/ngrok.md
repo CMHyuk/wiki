@@ -16,19 +16,17 @@ https://ngrok.com/download OS에 맞게 다운로드 한다.
 
 * 여러 개의 도메인을 연결
   * version 3의 경우 유로 결제를 해야한다.
-```
+```yaml
 version: "2"
 authtoken: 23oJkcJMk8EV9xgBRs2AoisGLfP_6speGduSgaEG9QShjaZuq
 region: jp
 tunnels:
   saml-idp:
-    addr:
-http://localhost:9001
+    addr: http://localhost:9001
     proto: http
     hostname: saml-idp-service.jp.ngrok.io
   idgp-service:
-    addr:
-http://localhost:9000
+    addr: http://localhost:9000
     proto: http
     hostname: oauth-service.jp.ngrok.io
 ```
