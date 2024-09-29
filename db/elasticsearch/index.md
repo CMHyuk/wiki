@@ -9,4 +9,4 @@
 - [characterfilter](characterfilter.md)
 - [tokenizer](tokenizer.md)
 - [tokenfilter](tokenfilter.md)
-- [stemming][stemming.md]
+- [stemming](stemming.md)
