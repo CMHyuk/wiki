@@ -30,3 +30,7 @@ tunnels:
     proto: http
     hostname: oauth-service.jp.ngrok.io
 ```
+
+* 설정 파일 적용
+`ngrok start --config "{경로}" --all`
+  * 경로 예시) `C:\Windows\ngrok.yml`
