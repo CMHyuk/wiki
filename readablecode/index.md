@@ -3,3 +3,4 @@
 - [메서드와 추상화](method.md)
 - [Early return](earlyreturn.md)
 - [사고의 depth 줄이기](depth.md)
+- [부정어를 대하는 자세](negative.md)
