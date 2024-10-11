@@ -9,3 +9,4 @@
 - [SOLID](solid.md)
 - [valueObject](valueobject.md)
 - [일급 컬렉션](collection.md)
+- [Enum](enum.md)
