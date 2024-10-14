@@ -10,3 +10,4 @@
 - [valueObject](valueobject.md)
 - [일급 컬렉션](collection.md)
 - [Enum](enum.md)
+- [주석의 양면성](comment.md)
