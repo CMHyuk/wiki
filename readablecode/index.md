@@ -10,5 +10,6 @@
 - [valueObject](valueobject.md)
 - [일급 컬렉션](collection.md)
 - [Enum](enum.md)
+- [다형성](polymorphism.md)
 - [주석의 양면성](comment.md)
 - [변수와 메서드의 나열 순서](order.md)
