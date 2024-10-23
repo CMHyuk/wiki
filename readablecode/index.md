@@ -7,7 +7,7 @@
 - [해피 케이스](happycase.md)
 - [객체 설계하기](object.md)
 - [SOLID](solid.md)
-- [상속과 조합](comment.md)
+- [상속과 조합](composition.md)
 - [valueObject](valueobject.md)
 - [일급 컬렉션](collection.md)
 - [Enum](enum.md)
