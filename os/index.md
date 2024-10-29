@@ -5,3 +5,4 @@
 - [인터럽트](interrupt.md)
 - [시스템 콜](systemcall.md)
 - [메모리 계층](memory.md)
+- [페이지 교체 알고리즘](algorithm.md)
