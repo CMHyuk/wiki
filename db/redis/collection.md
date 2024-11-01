@@ -9,3 +9,11 @@
 ### List Collection
 * 일반적인 Linked List 형태로 Head와 Tail에 데이터를 삽입 할 때, 압도적인 성능을 보장한다. 
 * 많이 사용 되지는 않지만, Job Queue 또는 Pub/Sub 모델을 구현하는데 있어서 일부 사용 되며, BRPOP, BLPOP과 함께 사용 되기도 한다.
+
+### Hashes Collection
+* RDB와 유사한 형태로 데이터를 저장하는 타입이다. 
+  * Key : PK 
+  * Field : Column 
+  * Value : Raw
+* 대표적으로 HSET, HGET이 존재하며, HSCAN, HEXISTS같은 좀 더 효과적인 명령어가 존재한다.
+* Keys 명령어는 사용하지 말자
