@@ -4,4 +4,5 @@
 [캐싱 전략](cachestrategy.md)  
 [RDB vs AOF](rdb&aof.md)  
 [Redis의 아키텍처](architecture.md)  
-[Redis의 Sync](sync.md)
+[Redis의 Sync](sync.md)  
+[Sentinel과 합의 과정 및 홀수 노드를 선정해야 하는 이유](sentinal.md)
