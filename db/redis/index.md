@@ -7,3 +7,4 @@
 [Redis의 Sync](sync.md)  
 [Sentinel과 합의 과정 및 홀수 노드를 선정해야 하는 이유](sentinal.md)
 [Cluster과 효율적인 키 관리 기법](cluster.md)
+[Redis의 Pub/Sub](pubsub.md)
