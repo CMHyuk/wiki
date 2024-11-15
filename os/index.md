@@ -6,4 +6,5 @@
 - [시스템 콜](systemcall.md)
 - [메모리 계층](memory.md)
 - [페이지 교체 알고리즘](algorithm.md)  
-- [가상 메모리](virtualmemory.md)
+- [가상 메모리](virtualmemory.md)  
+- [PCB](pcb.md)
