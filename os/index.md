@@ -9,3 +9,4 @@
 - [가상 메모리](virtualmemory.md)  
 - [PCB](pcb.md)  
 - [교착상태](deadlock.md)
+- [비선점형 알고리즘](non-preemptive.md)
