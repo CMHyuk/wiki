@@ -11,3 +11,4 @@
 - [교착상태](deadlock.md)
 - [비선점형 알고리즘](non-preemptive.md)
 - [선점형 알고리즘](preemptive.md)
+- [프로세스 메모리 구조](process-memory.md)
