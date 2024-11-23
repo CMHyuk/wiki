@@ -25,6 +25,7 @@
   - used_memory_rss: OS가 Redis에 할당하기 위해 사용한 물리적 메모리 양 (이 값을 보는 게 중요)
     - 삭제되는 키가 많으면 fragmentation 증가
       - fragmentation : 실제 저장된 데이터가 적으면 rss 값은 큰 상황이 발생할 수 있는데 이 차이가 클 때 fragmentation가 크다.
-      - 특정 시점에 key가 피크를 치고 다시 삭제되는 경우 
-      - TTL로 인해 삭제가 과도하게 많을 때
+      - fragmentation가 증가되는 상황
+         - 특정 시점에 key가 피크를 치고 다시 삭제되는 경우 
+         - TTL로 인해 삭제가 과도하게 많을 때
 
