@@ -10,5 +10,6 @@
 [Redis의 Pub/Sub](pubsub.md)  
 [Redis Script](script.md)  
 [Redis 분산락 사례](distributed-lock-example)  
-[Redis 추천 커맨드/설정](command.md)  
-[Redis 분산 락에서 Failover 문제 및 해결 방법](failover-situation.md)
+[Redis 추천 커맨드/설정](default-setting-command)  
+[Redis 분산 락에서 Failover 문제 및 해결 방법](failover-situation.md)  
+[Redis 명령어 실습](command.md)
