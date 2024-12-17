@@ -104,11 +104,41 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory rabbitConnectionFactory) 
     * 메시지 확인을 위해 추가 통신이 필요하기 때문에 오버헤드 발생
     * 대량 메시지 처리 시 성능 저하
 
-| 구분                | **Publisher Confirms**               | **Mandatory 플래그**                                 |
-|-------------------|--------------------------------------|---------------------------------------------------|
-| **동작 단계**         | Publisher → Exchange                 | Exchange → Queue                                  |
-| **보장하는 내용**       | 메시지가 Exchange에 도달했는지 확인              | 메시지가 큐(Queue)에 도달했는지 확인                           |
-| **에러 상황**         | 메시지가 Exchange에 도달하지 못함               | 메시지가 큐에 라우팅되지 못함                                  |
-| **Callback 메커니즘** | ConfirmCallback                      | ReturnsCallback                                   |
-| **설정 플래그**        | `publisher-confirm-type: correlated` | `publisher-returns: true`<br>`setMandatory(true)` |
-| **주요 사용 목적**      | 메시지 손실 방지 (브로커로의 전송 보장)              | 라우팅 실패 감지 (큐로의 전송 보장)                             |
+### Transactional Messaging
+
+* 메시지 송신을 하나의 트랜잭션 단위로 처리하는 방식으로, 메시지의 송신 성공 여부에 따라 커밋(commit) 또는 롤백(rollback)을 수행
+* 원자성 보장
+    * 메시지를 브로커로 완전히 보내거나, 아예 보내지 않음
+    * 메시지 전송 중 에러가 발생하면 롤백되어 브로커에 전송되지 않음
+* 성능 저하
+    * 메시지를 트랜잭션 단위로 처리하기 때문에 성능이 떨어질 수 있음
+    * 특히 고성능이 필요한 시스템에서는 트랜잭션 메시징보다 Publisher Confirms를 사용하는 경우가 많음
+
+```java
+
+@Bean
+public RabbitTransactionManager rabbitTransactionManager(ConnectionFactory connectionFactory) {
+    return new RabbitTransactionManager(connectionFactory);
+}
+
+@Bean
+RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+    RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+    rabbitTemplate.setChannelTransacted(true); // 트랜잭션 활성화
+    return rabbitTemplate;
+}
+
+// 트랜잭션 내에서 메시지 송신
+@Transactional
+public void sendMessage(String exchange, String routingKey, String message) {
+    rabbitTemplate.convertAndSend(exchange, routingKey, message);
+}
+```
+
+|           | **Transactional Messaging** | **Publisher Confirms**          | **Mandatory 플래그**           |
+|-----------|-----------------------------|---------------------------------|-----------------------------|
+| **목적**    | 메시지 전송의 원자성 보장              | 메시지가 Broker(Exchange)에 도달했는지 확인 | 메시지가 Queue에 라우팅되었는지 확인      |
+| **에러 처리** | 실패 시 롤백 및 재처리               | ConfirmCallback으로 브로커 도달 실패 감지  | ReturnsCallback으로 라우팅 실패 감지 |
+| **성능**    | 상대적으로 느림                    | 성능 최적화 가능                       | 성능 영향 없음                    |
+| **사용 상황** | 메시지 손실이 절대 허용되지 않는 경우       | 메시지의 전송 성공 여부만 확인               | 메시지의 라우팅 성공 여부만 확인          |
+
