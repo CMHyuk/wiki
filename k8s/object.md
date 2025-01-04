@@ -104,6 +104,57 @@ spec:
 
 ---
 
+### StatefulSet
+
+스테이트풀셋은 애플리케이션의 스테이트풀을 관리하는데 사용하는 워크로드 API 오브젝트이다.  
+디플로이먼트와 유사하게, 스테이트풀셋은 동일한 컨테이너 스펙을 기반으로 둔 파드들을 관리한다. 디플로이먼트와는 다르게, 스테이트풀셋은 각 파드의 독자성을 유지한다.  
+이 파드들은 동일한 스팩으로 생성되었지만, 서로 교체는 불가능하다.  
+다시 말해, 각각은 재스케줄링 간에도 지속적으로 유지되는 식별자를 가진다.  
+
+```yml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: nginx # .spec.template.metadata.labels 와 일치해야 한다
+  serviceName: "nginx"
+  replicas: 3 # 기본값은 1
+  minReadySeconds: 10 # 기본값은 0
+  template:
+    metadata:
+      labels:
+        app: nginx # .spec.selector.matchLabels 와 일치해야 한다
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx
+        image: registry.k8s.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "my-storage-class"
+      resources:
+        requests:
+          storage: 1Gi
+```
+
+* 이름이 nginx라는 헤드리스 서비스는 네트워크 도메인을 컨트롤하는데 사용 한다.
+* 이름이 web인 스테이트풀셋은 3개의 nginx 컨테이너의 레플리카가 고유의 파드에서 구동될 것이라 지시하는 Spec을 갖는다.
+* volumeClaimTemplates은 퍼시스턴트 볼륨 프로비저너에서 프로비전한 퍼시스턴트 볼륨을 사용해서 안정적인 스토리지를 제공한다.
+
+--- 
+
 ### Ingress
 ![img.png](./../image/ingress1.png)
 
@@ -171,5 +222,6 @@ spec:
 - **Service**는 애플리케이션을 클러스터 내부 또는 외부에서 접근할 수 있도록 하는 네트워크 엔드포인트를 제공
 - **Ingress**는 클러스터 외부에서 들어오는 HTTP(S) 트래픽을 클러스터 내부의 특정 서비스로 라우팅
     - Ingress를 작성하지 않더라도 서비스 자체를 띄우고 포트 포워딩을 통해 서비스에 접속 가능
+- **StatefulSet**은 상태가 필요한 애플리케이션(예: 데이터베이스) 관리
 
-클러스터의 desired state를 기술한 Deployment, 이를 네트워크 서비스로 노출시키는 Service, 클러스터 외부에서 클러스터 내부의 서비스로 접근할 수 있게 만들어주는 Ingress, 그리고 애플리케이션의 설정 데이터를 관리하여 환경에 따라 설정을 유연하게 적용할 수 있게 해주는 것이 ConfigMap이다.
+클러스터의 desired state를 기술한 Deployment, 이를 네트워크 서비스로 노출시키는 Service, 클러스터 외부에서 클러스터 내부의 서비스로 접근할 수 있게 만들어주는 Ingress, 그리고 애플리케이션의 설정 데이터를 관리하여 환경에 따라 설정을 유연하게 적용할 수 있게 해주는 것이 ConfigMap, 상태를 유지해야 하는 애플리케이션을 안정적으로 관리하고 Pod의 네트워크 ID와 스토리지를 유지해 주는 StatefulSet이다.
