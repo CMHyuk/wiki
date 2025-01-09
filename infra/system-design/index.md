@@ -2,4 +2,5 @@
 - [사용자 수에 따른 규모 확장성](01-scalability-with-user-growth.md)  
 - [개략적인 규모 추정](02-back-of-the-envelope-estimation.md)  
 - [처리율 제한 장치](04-throughput-limiter.md)
-- [안정 해시](05-consistent-hash.md)
+- [안정 해시](05-consistent-hash.md)  
+- [키-값 저장소 설계](06-key-value-store.md)
