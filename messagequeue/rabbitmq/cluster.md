@@ -4,6 +4,13 @@ RabbitMQ 클러스터는 기본적으로 Exchange는 모든 노드에서 공유�
 **Queue Mirroring**
 - Queue Mirroring은 여러 노드에 동일한 Queue를 복제하여 HA (High Availability)를 제공한다.
 - 하나의 Master Queue와 여러 Slave Queue로 구성되어, Master에서 처리되는 메시지가 Slave에도 복제되어 저장된다. 이로 인해 노드 실패 시 메시지 유실을 방지할 수 있다.
+- 미러링은 정책을 이용해 설정할 수 있다. 
+  - 클러스터 모든 노드의 Queue를 미러링하기 
+    - `$ rabbitmqctl set_policy ha-all "^ha\\." '{"ha-mode":"all"}'`
+  - 지정한 개수의 리플리카만 생성 
+    - `$ rabbitmqctl set_policy ha-two "^two\\." '{"ha-mode":"exactly", "ha-params": 2, "ha-sync-mode": "automatic"}'`
+  - 지정한 이름의 노드만 미러링 
+    - `$ rabbitmqctl set_policy ha-nodes "^nodes\\." '{"ha-mode": "nodes", "ha-params": ["rabbit@nodeA", "rabbit@nodeB"]}'`
 
 **Master-슬레이브 구조**
 - Master Queue: 실제로 메시지를 소비(consume)하는 Queue로, 모든 Producer는 Master에 메시지를 보낸다.
@@ -33,3 +40,5 @@ RabbitMQ 클러스터는 기본적으로 Exchange는 모든 노드에서 공유�
 - Queue Mirroring은 HA (High Availability)를 제공하여, 노드 실패 시 메시지 유실을 방지
 - 메시지 처리량을 높이는 것이 아니라, 서비스의 가용성을 높이는 데 사용
 - Master Queue가 실패하면 Slave Queue 중 하나가 승격되어 메시지 유실을 최소화
+
+[클러스터 구성 설정법](https://jonnung.dev/rabbitmq/2019/08/08/rabbitmq-cluster/#gsc.tab=0)
