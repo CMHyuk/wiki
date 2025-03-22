@@ -36,15 +36,35 @@ public void basicReject(long deliveryTag, boolean requeue);
 | `basicNack`   | 1개 또는 여러 개 | 지원 (`true` 또는 `false`) | 여러 메시지 거부 및 재처리 여부 결정 |
 | `basicReject` | 1개         | 지원 (`true` 또는 `false`) | 단일 메시지 거부 및 재처리 여부 결정 |
 
-### Mandatory 플래그
+### Transactional Messaging
 
-* 메시지가 큐에 도달하지 못했을 때 처리할 수 있는 기능
-    * `Basic.Return`: Mandatory 플래그가 true이고 라우팅되지 않은 메시지가 발생했을 때, Broker가 Producer에게 반환하는 이벤트
+* 메시지 송신을 하나의 트랜잭션 단위로 처리하는 방식으로, 메시지의 송신 성공 여부에 따라 커밋(commit) 또는 롤백(rollback)을 수행
+* 원자성 보장
+  * 메시지를 브로커로 완전히 보내거나, 아예 보내지 않음
+  * 메시지 전송 중 에러가 발생하면 롤백되어 브로커에 전송되지 않음
+* 성능 저하
+  * 메시지를 트랜잭션 단위로 처리하기 때문에 성능이 떨어질 수 있음
+  * 특히 고성능이 필요한 시스템에서는 트랜잭션 메시징보다 Publisher Confirms를 사용하는 경우가 많음
 
-```yaml
-spring:
-  rabbitmq:
-    publisher-returns: true
+```java
+
+@Bean
+public RabbitTransactionManager rabbitTransactionManager(ConnectionFactory connectionFactory) {
+    return new RabbitTransactionManager(connectionFactory);
+}
+
+@Bean
+RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+    RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+    rabbitTemplate.setChannelTransacted(true); // 트랜잭션 활성화
+    return rabbitTemplate;
+}
+
+// 트랜잭션 내에서 메시지 송신
+@Transactional
+public void sendMessage(String exchange, String routingKey, String message) {
+    rabbitTemplate.convertAndSend(exchange, routingKey, message);
+}
 ```
 
 ```java
@@ -80,7 +100,7 @@ RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 @Bean
 public ConnectionFactory rabbitConnectionFactory() {
     CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost", 5672);
-    connectionFactory.setPublisherConfirms(true);
+    connectionFactory.setPublisherConfirmType(CachingConnectionFactory.ConfirmType.CORRELATED);
     return connectionFactory;
 }
 
@@ -104,41 +124,30 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory rabbitConnectionFactory) 
     * 메시지 확인을 위해 추가 통신이 필요하기 때문에 오버헤드 발생
     * 대량 메시지 처리 시 성능 저하
 
-### Transactional Messaging
+### Mandatory 플래그
 
-* 메시지 송신을 하나의 트랜잭션 단위로 처리하는 방식으로, 메시지의 송신 성공 여부에 따라 커밋(commit) 또는 롤백(rollback)을 수행
-* 원자성 보장
-    * 메시지를 브로커로 완전히 보내거나, 아예 보내지 않음
-    * 메시지 전송 중 에러가 발생하면 롤백되어 브로커에 전송되지 않음
-* 성능 저하
-    * 메시지를 트랜잭션 단위로 처리하기 때문에 성능이 떨어질 수 있음
-    * 특히 고성능이 필요한 시스템에서는 트랜잭션 메시징보다 Publisher Confirms를 사용하는 경우가 많음
+* 메시지가 큐에 도달하지 못했을 때 처리할 수 있는 기능
+  * `Basic.Return`: Mandatory 플래그가 true이고 라우팅되지 않은 메시지가 발생했을 때, Broker가 Producer에게 반환하는 이벤트
 
-```java
-
-@Bean
-public RabbitTransactionManager rabbitTransactionManager(ConnectionFactory connectionFactory) {
-    return new RabbitTransactionManager(connectionFactory);
-}
-
-@Bean
-RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-    RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-    rabbitTemplate.setChannelTransacted(true); // 트랜잭션 활성화
-    return rabbitTemplate;
-}
-
-// 트랜잭션 내에서 메시지 송신
-@Transactional
-public void sendMessage(String exchange, String routingKey, String message) {
-    rabbitTemplate.convertAndSend(exchange, routingKey, message);
-}
+```yaml
+spring:
+  rabbitmq:
+    publisher-returns: true
 ```
 
-|           | **Transactional Messaging** | **Publisher Confirms**          | **Mandatory 플래그**           |
-|-----------|-----------------------------|---------------------------------|-----------------------------|
-| **목적**    | 메시지 전송의 원자성 보장              | 메시지가 Broker(Exchange)에 도달했는지 확인 | 메시지가 Queue에 라우팅되었는지 확인      |
-| **에러 처리** | 실패 시 롤백 및 재처리               | ConfirmCallback으로 브로커 도달 실패 감지  | ReturnsCallback으로 라우팅 실패 감지 |
-| **성능**    | 상대적으로 느림                    | 성능 최적화 가능                       | 성능 영향 없음                    |
-| **사용 상황** | 메시지 손실이 절대 허용되지 않는 경우       | 메시지의 전송 성공 여부만 확인               | 메시지의 라우팅 성공 여부만 확인          |
+### TCC 패턴
+
+- 분산 트랜잭션 처리에 적합한 방식
+    - Try: 자원을 예약
+    - Confirm: 작업 확정 (모든 서비스 OK 시 실행)
+    - Cancel: 작업 취소 (일부 실패 시 롤백)
+
+|            | **Transactional Messaging** | **Publisher Confirms**           | **Mandatory 플래그**             | **TCC 패턴 (Try-Confirm-Cancel)**                |
+|------------|-----------------------------|----------------------------------|-------------------------------|------------------------------------------------|
+| **목적**     | 메시지 전송의 원자성 보장              | 메시지가 Broker(Exchange)에 도달했는지 확인  | 메시지가 Queue에 라우팅되었는지 확인        | 분산 환경에서 단계별로 작업을 분리하여 정합성 보장                   |
+| **에러 처리**  | 실패 시 롤백 및 재처리               | `ConfirmCallback`으로 브로커 도달 실패 감지 | `ReturnsCallback`으로 라우팅 실패 감지 | 실패 시 `Cancel` 단계에서 명시적 롤백 수행                   |
+| **성능**     | 상대적으로 느림                    | 성능 최적화 가능                        | 성능 영향 없음                      | 구현 방식에 따라 유연하지만, 다단계 처리로 인해 오버헤드 가능성 있음        |
+| **사용 상황**  | 메시지 손실이 절대 허용되지 않는 경우       | 메시지의 전송 성공 여부만 확인                | 메시지의 라우팅 성공 여부만 확인            | **마이크로서비스 / 예약 / 결제 등 단계적 확정이 필요한 분산 트랜잭션 처리** |
+| **구현 난이도** | 중간 (Spring 지원 존재)           | 낮음 (Spring 설정만으로 가능)             | 낮음 (템플릿 설정으로 간단 구성 가능)        | 높음 (Try/Confirm/Cancel 로직 명확히 나눠야 함)           |
+
 
