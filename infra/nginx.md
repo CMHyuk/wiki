@@ -1,6 +1,6 @@
 ### Nginx 기본 문법
 
-#### ✅Nginx의 설정 파일 위치
+#### ✅ Nginx의 설정 파일 위치
 
 1. `/etc/nginx/nginx.conf`
     - Nginx에서 가장 근본이 되는 설정 파일(루트 설정 파일)
@@ -90,7 +90,7 @@ server {
 ‘중괄호({...}) 형태의 구문’과 ‘세미 콜론(;)으로 끝나는 구문’ 2가지가 있다. 설정 파일을 작성할 때 세미 콜론(;)을 빠트려서 에러가 뜨는 경우가 많으니 주의하자.
 
 
-✅Nginx 기본 웹 사이트 수정
+#### ✅ Nginx 기본 웹 사이트 수정
 
 1. 설정 파일 확인
    - `$ cd /etc/nginx/conf.d/default.conf`
@@ -206,4 +206,23 @@ the error log for details.</p>
 <p><em>Faithfully yours, nginx.</em></p>
 </body>
 </html>
+```
+
+#### ✅ Nginx 에러 체크 및 반영
+```shell
+# Nginx 실행 체크
+$ sudo systemctl status nginx
+
+# Nginx 설정 파일 중 문법 에러가 있는 지 체크
+$ sudo nginx -t
+
+# Nginx의 설정 파일이 바뀐 경우 아래 명령어를 입력해줘야 설정 파일이 반영된다.
+$ sudo nginx -s reload
+
+### 로그 실시간 체크
+# 제대로 요청이 들어오고 있는 지 확인
+$ sudo tail -f /var/log/nginx/access.log
+
+# 에러 메시지 확인
+$ sudo tail -f /var/log/nginx/error.log
 ```
