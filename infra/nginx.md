@@ -227,6 +227,40 @@ $ sudo tail -f /var/log/nginx/access.log
 $ sudo tail -f /var/log/nginx/error.log
 ```
 
+### Spring Boot 서버에 HTTPS 적용하기
+
+- HTTPS 인증서 발급받기
+  - `sudo certbot --nginx -d api.jscode.p-e.kr // 반드시 도메인을 먼저 연결한 뒤에 위 명령어를 쳐야 정상 작동한다.`
+- Nginx 설정 파일 확인
+
+```shell
+server {
+        server_name api.jscode.p-e.kr;
+
+        location / {
+                proxy_pass http://localhost:8080;
+        }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/api.jscode.p-e.kr/fullchain.pem # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/api.jscode.p-e.kr/privkey.pm; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = api.jscode.p-e.kr) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80;
+        server_name api.jscode.p-e.kr;
+    return 404; # managed by Certbot
+    
+}
+```
+
 ### 리버스 프록시
 
 **✅ 프록시(Proxy)란?**  
@@ -321,4 +355,3 @@ server {
 
 }
 ```
-
