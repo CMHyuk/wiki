@@ -228,9 +228,14 @@ $ sudo tail -f /var/log/nginx/error.log
 ```
 
 ### Spring Boot 서버에 HTTPS 적용하기
+- Certbot 설치
+```shell
+$ sudo snap install --classic certbot
+$ sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
 
 - HTTPS 인증서 발급받기
-  - `sudo certbot --nginx -d api.jscode.p-e.kr // 반드시 도메인을 먼저 연결한 뒤에 위 명령어를 쳐야 정상 작동한다.`
+  - `sudo certbot --nginx -d <도메인 주소> // 반드시 도메인을 먼저 연결한 뒤에 위 명령어를 쳐야 정상 작동한다.`
 - Nginx 설정 파일 확인
 
 ```shell
