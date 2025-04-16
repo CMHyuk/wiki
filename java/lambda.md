@@ -1,5 +1,46 @@
 ### 함수형 인터페이스
 
+### Function
+
+```java
+@FunctionalInterface
+public interface Function<T, R> {
+    R apply(T t);
+}
+```
+
+- 하나의 매개변수를 받고, 결과를 반환하는 함수형 인터페이스이다.
+- 입력값(`T` )을 받아서 다른 타입의 출력값(`R` )을 반환하는 연산을 표현할 때 사용한다. 물론 같은 타입의 출력 값도 가능하다. 
+- 일반적인 함수(Function)의 개념에 가장 가깝다. 
+  - 예: 문자열을 받아서 정수로 변환, 객체를 받아서 특정 필드 추출 등
+
+
+### Consumer
+
+```java
+@FunctionalInterface
+public interface Consumer<T> {
+    void accept(T t);
+}
+```
+
+- 입력 값(T)만 받고, 결과를 반환하지 않는(`void` ) 연산을 수행하는 함수형 인터페이스이다. 
+- 입력값(T)을 받아서 처리하지만 결과를 반환하지 않는 연산을 표현할 때 사용한다. 
+- 입력 받은 데이터를 기반으로 내부적으로 처리만 하는 경우에 유용하다. 
+  - 예) 컬렉션에 값 추가, 콘솔 출력, 로그 작성, DB 저장 등
+
+### Supplier
+
+```java
+@FunctionalInterface
+public interface Supplier<T> {
+    T get();
+}
+```
+
+- 입력을 받지 않고(`()` ) 어떤 데이터를 공급(supply)해주는 함수형 인터페이스이다. 
+- 객체나 값 생성, 지연 초기화 등에 주로 사용된다.
+
 | 인터페이스            | 메서드 시그니처           | 입력     | 출력     | 대표 사용 예시         |
 |------------------|--------------------|--------|--------|------------------|
 | `Function<T, R>` | `R apply(T t)`     | 1개 (T) | 1개 (R) | 데이터 변환, 필드 추출 등  |
@@ -10,16 +51,18 @@
 ---
 
 ### 특화 함수형 인터페이스
-특화 함수형 인터페이스는 의도를 명확하게 만든 조금 특별한 함수형 인터페이스다.  
+
+특화 함수형 인터페이스는 의도를 명확하게 만든 조금 특별한 함수형 인터페이스다.
 
 - `Predicate` : 입력O, 반환 `boolean`
-  - 조건 검사, 필터링 용도
-- `Operator` : (`UnaryOperator` ,`BinaryOperator` ): 입력O, 반환O 
-  - 동일한 타입의 연산 수행, 입력과 같은 타입을 반환하는 연산 용도
+    - 조건 검사, 필터링 용도
+- `Operator` : (`UnaryOperator` ,`BinaryOperator` ): 입력O, 반환O
+    - 동일한 타입의 연산 수행, 입력과 같은 타입을 반환하는 연산 용도
 
-### Predicate   
+### Predicate
 
 ```java
+
 @FunctionalInterface
 public interface Predicate<T> {
     boolean test(T t);
@@ -27,11 +70,12 @@ public interface Predicate<T> {
 ```
 
 **Predicate가 꼭 필요할까?**  
-`Predicate` 는 입력이 `T` , 반환이 `boolean` 이기 때문에 결과적으로 `Function<T, Boolean>`으로 대체할 수 있다. 그럼에도 불구하고 `Predicate` 를 별도로 만든 이유는 다음과 같다.  
+`Predicate` 는 입력이 `T` , 반환이 `boolean` 이기 때문에 결과적으로 `Function<T, Boolean>`으로 대체할 수 있다. 그럼에도 불구하고 `Predicate` 를 별도로 만든 이유는
+다음과 같다.
 
 1. **의미의 명확성**  
-  `Predicate<T>` 를 사용하면 "이 함수는 조건을 검사하거나 필터링 용도로 쓰인다"라는 의도가 더 분명해진다.
-   `Function<T, Boolean>` 을 쓰면 "이 함수는 무언가를 계산해 `Boolean` 을 반환한다"라고 볼 수도 있지만, "조건 검사"라는 목적이 분명히 드러나지 않을 수 있다.  
+   `Predicate<T>` 를 사용하면 "이 함수는 조건을 검사하거나 필터링 용도로 쓰인다"라는 의도가 더 분명해진다.
+   `Function<T, Boolean>` 을 쓰면 "이 함수는 무언가를 계산해 `Boolean` 을 반환한다"라고 볼 수도 있지만, "조건 검사"라는 목적이 분명히 드러나지 않을 수 있다.
 2. **가독성 및 유지보수성**  
    여러 사람과 협업하는 프로젝트에서, "조건을 판단하는 함수"는 `Predicate<T>` 라는 패턴을 사용함으로
    써 의미 전달이 명확해진다.
@@ -42,20 +86,22 @@ public interface Predicate<T> {
 
 Operator는 `UnaryOperator` , `BinaryOperator` 2가지 종류가 제공된다.
 
-**UnaryOperator(단항 연산)**  
+**UnaryOperator(단항 연산)**
 
 ```java
+
 @FunctionalInterface
 public interface UnaryOperator<T> extends Function<T, T> {
     T apply(T t); // 실제 코드가 있지는 않음
 }
 ```
 
-**BinaryOperator(이항 연산)**  
+**BinaryOperator(이항 연산)**
 
 ```java
+
 @FunctionalInterface
-public interface BinaryOperator<T> extends BiFunction<T,T,T> {
+public interface BinaryOperator<T> extends BiFunction<T, T, T> {
     T apply(T t1, T t2); // 실제 코드가 있지는 않음
 }
 ```
@@ -63,5 +109,11 @@ public interface BinaryOperator<T> extends BiFunction<T,T,T> {
 "단항 연산(입력 하나)"이고 **타입이 동일**하다면 `UnaryOperator<T>` 를,  
 "이항 연산(입력 두 개)"이고 **타입이 동일**하다면 `BinaryOperator<T>` 를 쓰는 것이 개발자의 **의도**와 **로직**을
 더 명확히 표현하고, **가독성**을 높일 수 있는 장점이 있다.
+
+| 인터페이스               | 메서드 시그니처              | 입력        | 출력      | 대표 사용 예시                  |
+|---------------------|-----------------------|-----------|---------|---------------------------|
+| `Predicate<T>`      | `boolean test(T t)`   | 1개 (T)    | boolean | 조건 검사, 필터링                |
+| `UnaryOperator<T>`  | `T apply(T t)`        | 1개 (T)    | 1개 (T)  | 단항 연산 (예: 문자열 변환, 단항 계산)  |
+| `BinaryOperator<T>` | `T apply(T t1, T t2)` | 2개 (T, T) | 1개 (T)  | 이항 연산 (예: 두 수의 합, 최댓값 반환) |
 
 ---
