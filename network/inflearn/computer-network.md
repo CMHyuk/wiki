@@ -32,10 +32,10 @@
 **호스트**  
 - 네트워크에서 가장자리 노드로, 종단 시스템(end system)이라고도 부름
 
-**LAN(Local Area Network)**  
-- 가까운 지역을 연결한 근거리 통신망
-
-**WAN(Wide Area Network)**  
-- 먼 지역을 연결하는 광역 통신망
+**네트워크 규모에 따른 분류**  
+- LAN(Local Area Network)
+- CAN(Campus Area Network) - 학교 또는 회사의 여러 건물 단위 
+- MAN(Metropolitan Area Network) - 도시나 대도시 단위 
+- WAN(Wide Area Network)
 
 
