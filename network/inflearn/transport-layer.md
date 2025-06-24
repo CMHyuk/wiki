@@ -60,3 +60,14 @@
 | 3306  | MySQL           | Registered        |
 | 8080  | Tomcat / WebApp | Registered        |
 | 55000 | 클라이언트 임시 포트     | Dynamic / Private |
+
+**포트를 활용하는 기술: 포트 기반 NAT**  
+- NAT 변환 테이블: 변환의 대상이 되는 IP 주소 쌍 
+- 사설 IP 주소 하나당 공인 IP 주소 하나가 대응: 많은 사설 IP 주소를 변환하기에는 무리가 있음 
+- 공인 IP 주소의 낭비: 사설 IP 주소의 수만큼 공인 IP 주소가 필요
+
+**NAPT(Network Address Port Translation), APT**  
+- NAPT는 NAT 테이블에 변환할 IP 주소 쌍과 더불어 포트 번호도 함께 기록하고, 변환 
+- 하나의 공인 IP 주소를 여러 사설 IP 주소가 공유 가능 
+  - 사설 IP 주소: 공인 IP 주소를 N:1로 변환 
+  - 공인 IP 주소 수 부족 문제를 개선한 기술
