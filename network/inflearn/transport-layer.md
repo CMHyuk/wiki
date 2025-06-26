@@ -61,18 +61,51 @@
 | 8080  | Tomcat / WebApp | Registered        |
 | 55000 | 클라이언트 임시 포트     | Dynamic / Private |
 
-**포트를 활용하는 기술: 포트 기반 NAT**  
-- NAT 변환 테이블: 변환의 대상이 되는 IP 주소 쌍 
-- 사설 IP 주소 하나당 공인 IP 주소 하나가 대응: 많은 사설 IP 주소를 변환하기에는 무리가 있음 
+**포트를 활용하는 기술: 포트 기반 NAT**
+
+- NAT 변환 테이블: 변환의 대상이 되는 IP 주소 쌍
+- 사설 IP 주소 하나당 공인 IP 주소 하나가 대응: 많은 사설 IP 주소를 변환하기에는 무리가 있음
 - 공인 IP 주소의 낭비: 사설 IP 주소의 수만큼 공인 IP 주소가 필요
 
-**NAPT(Network Address Port Translation), APT**  
-- NAPT는 NAT 테이블에 변환할 IP 주소 쌍과 더불어 포트 번호도 함께 기록하고, 변환 
-- 하나의 공인 IP 주소를 여러 사설 IP 주소가 공유 가능 
-  - 사설 IP 주소: 공인 IP 주소를 N:1로 변환 
-  - 공인 IP 주소 수 부족 문제를 개선한 기술
+**NAPT(Network Address Port Translation), APT**
 
-**포트 포워딩**  
-- 네트워크 내부의 여러 호스트가 공인 IP 주소를 공유하는 상황 
-- 네트워크 외부에서 내부로 (원격 접속을 시도하는 등) 통신을 시작하는 상황 
+- NAPT는 NAT 테이블에 변환할 IP 주소 쌍과 더불어 포트 번호도 함께 기록하고, 변환
+- 하나의 공인 IP 주소를 여러 사설 IP 주소가 공유 가능
+    - 사설 IP 주소: 공인 IP 주소를 N:1로 변환
+    - 공인 IP 주소 수 부족 문제를 개선한 기술
+
+**포트 포워딩**
+
+- 네트워크 내부의 여러 호스트가 공인 IP 주소를 공유하는 상황
+- 네트워크 외부에서 내부로 (원격 접속을 시도하는 등) 통신을 시작하는 상황
 - 위 상황에서 네트워크 내 특정 호스트에 IP 주소와 포트 번호를 미리 할당하고, 해당 IP 주소:포트 번호로써 해당 호스트에게 패킷을 전달하는 기능
+
+**IP의 전송 특성을 보완하는 ICMP**
+
+- IP 패킷 전송 과정에 대한 피드백 메시지 제공
+- 피드백 메시지
+    - 전송 과정에서 발생한 문제 상황에 대한 오류 보고
+    - 네트워크에 대한 진단 정보(네트워크상의 정보 제공)
+- RFC 792에 따르면 ICMP는 IP의 보조일 뿐: 신뢰성의 완전 보장 X
+
+### ICMP 메시지 타입(Type) + 코드(Code)
+
+| 타입(Type) | 의미                      | 코드(Code) | 코드 의미                             |
+|----------|-------------------------|----------|-----------------------------------|
+| 0        | Echo Reply (응답)         | 0        | 응답                                |
+| 3        | Destination Unreachable | 0        | Network Unreachable               |
+|          |                         | 1        | Host Unreachable                  |
+|          |                         | 2        | Protocol Unreachable              |
+|          |                         | 3        | Port Unreachable                  |
+|          |                         | 6        | Network Unknown                   |
+|          |                         | 7        | Host Unknown                      |
+| 5        | Redirect Message        | 0        | Redirect for Network              |
+|          |                         | 1        | Redirect for Host                 |
+| 8        | Echo Request (핑 요청)     | 0        | 요청                                |
+| 9        | Router Advertisement    | 0        | 라우터 광고                            |
+| 10       | Router Solicitation     | 0        | 라우터 요청                            |
+| 11       | Time Exceeded           | 0        | TTL exceeded in transit           |
+|          |                         | 1        | Fragment reassembly time exceeded |
+| 12       | Parameter Problem       | 0        | Pointer indicates the error       |
+| 13       | Timestamp Request       | 0        | 타임스탬프 요청                          |
+| 14       | Timestamp Reply         | 0        | 타임스탬프 응답                          |
