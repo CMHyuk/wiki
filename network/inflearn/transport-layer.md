@@ -219,6 +219,10 @@
     - 호스트가 세그먼트를 전송할 때마다 재전송 타이머 시작 
     - 타임아웃이 발생할 때까지 ACK 세그먼트를 받지 못하면 재전송
 
+**빠른 재전송**
+- 재전송 타이머가 만료되기 전이라도 세 번의 동일한 ACK 세그먼트를 받았다면 곧바로 재전송
+- 타이머가 끝날 때까지 기다리는 시간을 줄일 수 있음
+
 **재전송 기반 오류 제어**  
 - 재전송 기법: ARQ(Automatic Repeat Request, 자동 재전송 요구)
   - 수신 호스트의 답변과 타임아웃을 토대로 문제를 진단하고, 문제가 생긴 메시지를 재전송함으로써 신뢰성을 확보하는 방식
@@ -226,3 +230,22 @@
   - Stop-and-Wait ARQ 
   - Go-Back-N ARQ 
   - Selective Repeat ARQ
+
+**Stop-and-Wait ARQ**  
+- 송신 호스트: 확인 응답을 받기 전에는 더 보내고 싶어도 못 보냄 
+- 수신 호스트: 더 많은 데이터를 처리할 수 있어도 하나씩만 확인 응답 
+- Stop-and-Wait ARQ의 문제 해결 방법 
+  - 각 세그먼트에 대한 ACK 세그먼트가 도착하기 전이라도 여러 세그먼트를 보낼 수 있어야 함 
+  - 파이프라이닝 - 연속해서 메시지를 전송할 수 있는 기술
+
+**Go-Back-N ARQ**  
+- 파이프라이닝 기반 ARQ 일종 
+- 여러 세그먼트 전송 중 오류가 발생하면 해당 세그먼트로부터 전부 재전송
+- 순서 번호 n번에 대한 ACK 세그먼트는 'n번만의' 확인 응답이 아닌 'n번까지의 누적 확인 응답' 
+- 누적 확인 응답(CACK, Cumulative Acknowledgment)
+
+**Selective Repeat ARQ**  
+- 선택적으로 재전송; 각각의 패킷들에 대해 ACK 세그먼트를 보내는 방식 
+- Go-Back-N ARQ의 ACK 세그먼트가 누적 확인 응답이라면, Selective Repeat ARQ의 ACK 세그먼트는 개별 확인 응답 
+- 오늘날 대부분의 호스트는 Selective Repeat ARQ 지원 
+- Selective Repeat ARQ를 사용하지 않을 경우 Go-Back-N ARQ로 동작
