@@ -165,3 +165,40 @@
   - 패시브 클로즈: 종료 수락 호스트의 종료 과정
 
 ![img.png](../../image/tcp-connection-end.png)
+
+
+**TCP 상태의 유형**  
+- **연결이 수립되지 않은 상태**
+  - CLOSED - 아무런 연결이 없는 상태 
+  - LISTEN - 일종의 연결 대기 상태 (SYN 세그먼트를 기다리는 상태)
+    - 서버로서 동작하는 패시브 오픈 호스트는 일반적으로 LISTEN 상태 유지 
+    - LISTEN 호스트에게 SYN 세그먼트를 보내면 쓰리 웨이 핸드셰이크 시작
+
+![img.png](../../image/connection-standby.png)
+
+- **연결 수립 과정에서 주로 볼 수 있는 상태**
+  - **STN-SENT**
+    - 연결 요청을 보낸 뒤 대기하는 상태 
+    - 액티브 오픈 호스트가 SYN 세그먼트를 보낸 뒤 그에 대한 응답인 SYN + ACK 세그먼트를 기다리는 상태
+  - **SYN-RECEIVED**
+    - 패시브 오픈 호스트가 SYN + ACK 세그먼트를 보낸 뒤 그에 대한 ACK 세그먼트를 기다리는 상태
+  - **ESTABLISHED**
+    - 연결이 확립되었음을 나타내는 상태
+
+![img.png](../../image/connection-establish.png)
+
+- **연결 종료 과정에서 주로 볼 수 있는 상태**
+  - **FIN_WAIT-1**
+    - 일반적인 TCP 연결 종료 과정에 있어 FIN-WAIT-1은 연결 종료의 첫 단계
+  - **CLOSE-WAIT**
+    - 종료 요청인 FIN 세그먼트를 받은 패시브 클로즈 호스트가 그에 대한 응답으로 ACK 세그먼트를 보낸 후 대기하는 상태
+  - **FIN-WAIT-2**
+    - FIN-WAIT-1 상태에서 ACK 세그먼트를 받고 상대 호스트의 FIN 세그먼트를 기다리는 상태
+  - **LAST-ACK**
+    - CLOSE-WAIT 상태에서 FIN 세그먼트를 전송한 뒤 이에 대한 ACK 세그먼트를 기다리는 상태
+  - **TIME-WAIT**
+    - 액티브 클로즈 호스트가 FIN 세그먼트를 수신한 뒤, 이에 대한 ACK 세그먼트를 전송한 뒤 접어드는 상태 
+    - 패시브 클로즈 호스트는 마지막 ACK 세그먼트를 수신하면 CLOSED 상태로 전이 
+    - TIME-WAIT 상태의 액티브 클로즈 호스트는 일정 시간을 기다린 뒤 CLOSED 상태로 전이
+
+![img.png](../../image/connection-end.png)
