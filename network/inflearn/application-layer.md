@@ -101,4 +101,23 @@
 | **HTTP/2**   | 2015  | - 바이너리 기반<br>- 다중 요청 병렬 처리 (Multiplexing) 지원     | 하나의 TCP 연결         | - 헤더 압축 (HPACK)<br>- 서버 푸시           | - 여전히 TCP 기반 → 패킷 손실 시 모든 스트림 지연 가능성     |
 | **HTTP/3**   | 2022  | - **QUIC 프로토콜** 기반 (UDP 위에서 작동)<br>- 완전한 멀티플렉싱   | UDP 기반 QUIC        | - 연결 지연 감소 (0-RTT 지원)<br>- 손실 영향 최소화 | - 네트워크 및 장비 호환성 이슈<br>- 구현 난이도 상대적으로 높음  |
 
+---
+
+### Header
+
+**주요 HTTP Header**
+
+# 주요 HTTP 요청 헤더 정리
+
+| 헤더 이름                | 설명                                                                                                                                                                                                                  | 예시                                                                                             |
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| **Host**             | 요청 대상 서버의 도메인 이름을 지정                                                                                                                                                                                                | `Host: www.example.com`                                                                        |
+| **User-Agent**       | 클라이언트의 브라우저, 운영체제 등 정보를 제공<br>→ `Mozilla/5.0`: 브라우저 호환성 정보<br>→ `Windows NT 10.0; Win64; x64`: 운영체제 및 아키텍처 정보<br>→ `rv:109.0`: 렌더링 엔진 버전<br>→ `Gecko/20100101`: 렌더링 엔진 이름 및 날짜 정보<br>→ `Firefox/109.0`: 브라우저 이름과 버전 | `User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0` |
+| **Referer**          | 현재 요청을 발생시킨 직전 페이지 URL                                                                                                                                                                                              | `Referer: https://www.google.com/`                                                             |
+| **Authorization**    | 인증 정보를 포함 (주로 토큰)                                                                                                                                                                                                   | `Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...`                                        |
+| **Allow**            | 서버가 지원하는 HTTP 메서드 목록 응답에 사용                                                                                                                                                                                         | `Allow: GET, POST, HEAD`                                                                       |
+| **Retry-After**      | 클라이언트가 다시 요청해야 하는 시간 또는 날짜                                                                                                                                                                                          | `Retry-After: 120` 또는 `Retry-After: Wed, 21 Oct 2025 07:28:00 GMT`                             |
+| **Location**         | 리다이렉션이 발생할 때 새로운 URL 제공                                                                                                                                                                                             | `Location: https://www.example.com/new-location`                                               |
+| **WWW-Authenticate** | 인증이 필요한 경우 인증 방법 제시                                                                                                                                                                                                 | `WWW-Authenticate: Basic realm="Access to the site"`                                           |
+
 
