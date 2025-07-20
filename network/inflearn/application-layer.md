@@ -118,4 +118,13 @@
 | **Location**         | 리다이렉션이 발생할 때 새로운 URL 제공                                                                                                                                                                                             | `Location: https://www.example.com/new-location`                                               |
 | **WWW-Authenticate** | 인증이 필요한 경우 인증 방법 제시                                                                                                                                                                                                 | `WWW-Authenticate: Basic realm="Access to the site"`                                           |
 
-
+**캐시**  
+- 응답 받은 자원의 사본을 임시 저장하는 기술
+- 개인 전용 캐시 - 웹 브라우저에 저장 
+- 공용 캐시 - 클라이언트와 서버 사이에 위치한 중간 서버에 저장
+- If-Modified-Since 헤더: 날짜를 기반으로 서버에게 물어보는 방법
+- Last-Modified 헤더: 상태 코드 304를 통한 자원의 변경 여부뿐만 아니라 자원이 마지막으로 수정된 시점도 알려줄 수 있음
+- If-None-Match 헤더: 엔티티 태그를 기반으로 서버에게 물어보는 방법 
+  - Etag는 자원의 버전을 식별하기 위한 정보 
+  - 버전이란 유의미한 변경 사항 
+  - 즉, 자원이 변경될 때마다 자원의 버전을 식별하는 Etag 값이 변경 변경되지 않으면 Etag 값도 변경되지 않음
