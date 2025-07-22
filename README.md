@@ -34,3 +34,6 @@
 
 ### INFRA
 - [인프라](infra/index.md)
+
+### Architecture
+- [아키텍처](architecture/index.md)
