@@ -25,5 +25,3 @@
 - [블록/논블록](blocknonblock.md)
 - [바운드](bound.md)
 
-### 목차
-- [운영체제 전체 목차](index.md)

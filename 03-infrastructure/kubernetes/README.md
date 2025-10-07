@@ -15,6 +15,3 @@
 
 ## 트러블슈팅
 - [문제 해결](troubleshooting.md)
-
-### 목차
-- [Kubernetes 전체 목차](index.md)

@@ -20,6 +20,3 @@
 
 ## 기타
 - [ShardingSphere](shardingsphere.md)
-
-### 목차
-- [데이터베이스 전체 목차](index.md)

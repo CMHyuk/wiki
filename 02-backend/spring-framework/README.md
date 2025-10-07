@@ -13,6 +13,3 @@
 
 ## 테스팅
 - [TestContainer](testcontainer.md)
-
-### 목차
-- [Spring 전체 목차](index.md)
