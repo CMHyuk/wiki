@@ -1,7 +1,7 @@
 ### **Authorization Code Grant - 권한 부여 승인 코드 방식**  
 권한 부여 승인을 위해 자체 생성한 Authorization Code를 전달하는 방식으로 많이 쓰이고 기본이 되는 방식이다. 간편 로그인 기능에서 사용되는 방식으로 클라이언트가 사용자를 대신하여 특정 자원에 접근을 요청할 때 사용되는 방식이다. 보통 타사의 클라이언트에게 보호된 자원을 제공하기 위한 인증에 사용된다. RefreshToken의 사용이 가능한 방식이다.  
 
-![img.png](../../image/AuthorizationCode.jpg)  
+![img.png](../../../assets/images/AuthorizationCode.jpg)  
 
 권한 부여 승인 요청 시 response_type을 code로 지정하여 요청한다. 이후 클라이언트는 권한 서버에서 제공하는 로그인 페이지를 브라우저에 띄워 출력한다. 사용자가 로그인을 하면 권한 서버는 권한 부여 승인 코드 요청 시 전달받은 redirect_url로 Authorization Code를 전달한다. Authoirzation Code는 권한 서버에서 제공하는 API를 통해 accessToken으로 교환된다.  
 
@@ -12,21 +12,21 @@
 
 refreshToken 사용이 불가능한 방식이며, 이 방식에서 권한 서버는 client_secret를 사용해 클라이언트를 인증하지 않는다. accessToken을 획득하기 위한 절차가 간소화되기에 응답성과 효율성은 높아지지만 accessToken이 URL로 전달되는 단점이 있다.  
 
-![img.png](../../image/implict.png)    
+![img.png](../../../assets/images/implict.png)    
 
 권한 부여 승인 요청 시 response_type을 token으로 설정하여 요청한다. 이후 클라이언트는 권한 서버에서 제공하는 로그인 페이지를 브라우저를 띄워 출력하게 되며 로그인이 완료되면 권한 서버는 Authorization Code가 아닌 accessToken을 redirect_url로 바로 전달한다.
 
 ### **Resource Owner Password Credentials Grant - 자원 소유자 자격 증명 승인 방식**  
 간단하게 username, password로 accessToken을 받는 방식이다. 클라이언트가 타사의 외부 프로그램일 경우에 이 방식을 적용하면 안된다. 자신의 서비스에서 제공하는 어플리케이션일 경우에만 사용되는 인증 방식이다. refreshToken의 사용도 가능하다.
 
-![img.png](../../image/resource.png)  
+![img.png](../../../assets/images/resource.png)  
 
 위와 같이 흐름은 간단하다. 제공하는 API를 통해 username, password를 전달해 accessToken을 받는 것이다. 중요한 점은 이 방식은 권한 서버, 리소스 서버, 클라이언트가 모두 같은 시스템에 속해 있을 때 사용되어야 하는 방식이라는 점이다.
 
 ### **Client Credentials Grant - 클라이언트 자격 증명 승인 방식**  
 클라이언트의 자격 증명(client_id, client_secret)만으로 accessToken을 획득하는 방식이다. OAuth2의 권한 부여 방식 중 가장 간단한 방식으로 클라이언트 자신이 관리하는 리소스 혹은 권한 서버에 해당 클라이언트를 위한 제한된 리소스 접근 권한이 설정되어 있는 경우에 사용된다. 이 방식은 자격 증명을 안전하게 보관할 수 있는 클라이언트에서만 사용되어야 하며, refreshToken은 사용할 수 없다.  
 
-![img.png](../../image/credentials.png)   
+![img.png](../../../assets/images/credentials.png)   
 
 
 **Authorization Code 사용 유무에 따른 보안성 차이**

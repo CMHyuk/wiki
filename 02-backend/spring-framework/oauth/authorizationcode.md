@@ -1,4 +1,4 @@
-![img.png](../../image/code.png)
+![img.png](../../../assets/images/code.png)
 
 1. 클라이언트의 인증을 받음
 2. 토큰 요청
