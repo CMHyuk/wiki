@@ -29,7 +29,7 @@
 ### AMQP
 * Advanced Message Queing Protocol의 약자로, 흔히 알고 있는 MQ의 오픈소스에 기반한 표준 프로토콜을 의미한다.  
 
-![rabbitmq](../../assets/images/rabbitmq-1.png)  
+![rabbitmq](../../../../assets/images/rabbitmq-1.png)  
 
 여기서 말하는 one to one fanout의 경우 Fanout 익스체인지는 여러 큐에 메시지를 브로드캐스트하지만, 각 큐에 연결된 소비자는 한 명이므로 메시지는 각각의 큐에서 하나의 소비자에게만 전달되므로 1:1 방식의 메시지 소비를 뜻한다. 
 여러 소비자에게 동시에 메시지를 전달하되 각 메시지가 단일 소비자에게만 전달되도록 보장하고 싶은 경우를 의미한다고 보면 된다.  

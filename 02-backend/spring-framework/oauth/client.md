@@ -26,4 +26,4 @@
 - 토큰 요청 패턴
     - **POST /oauth/token, POST /oauth/introspect, POST /oauth2/revoke**
 
-![img.png](../../../assets/images/client.png)
+![img.png](../../../../assets/images/client.png)

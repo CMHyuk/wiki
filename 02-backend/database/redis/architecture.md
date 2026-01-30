@@ -14,7 +14,7 @@
 
 ### 아키텍처 선정 기준
 
-![img.png](../../assets/images/redis-architecture.png)  
+![img.png](../../../../assets/images/redis-architecture.png)  
 
 * Cluster: 샤딩을 포함하여 고가용성과 대용량 데이터를 처리할 경우 
 * Sentinel: 샤딩이 필요 없으면서 고가용성을 요구할 경우 

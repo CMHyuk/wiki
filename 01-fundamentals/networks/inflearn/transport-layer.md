@@ -118,13 +118,13 @@
 - MSS - TCP로 전송할 수 있는 최대 페이로드 크기 
 - TCP 헤더 크기는 제외
 
-![img.png](../../assets/images/mss.png)
+![img.png](../../../../assets/images/mss.png)
 
 --- 
 
 ### TCP 세그먼트 구조  
 
-![img.png](../../assets/images/TCP-Segment.png)
+![img.png](../../../../assets/images/TCP-Segment.png)
 
 - **순서 번호**   
   - 순서 번호가 명시되는 필드 
@@ -152,9 +152,9 @@
 
 **연결 수립**  
 
-![img.png](../../assets/images/3-way-handshake.png)
+![img.png](../../../../assets/images/3-way-handshake.png)
 
-![img.png](../../assets/images/3-way-handshake-1.png)
+![img.png](../../../../assets/images/3-way-handshake-1.png)
 
 - 액티브 오픈: 연결 시작 호스트의 연결 수립 과정 
 - 패시브 오픈: 연결 수락 호스트의 연결 수립 과정
@@ -164,7 +164,7 @@
   - 액티브 클로즈: 종료 시작 호스트의 종료 과정 
   - 패시브 클로즈: 종료 수락 호스트의 종료 과정
 
-![img.png](../../assets/images/tcp-connection-end.png)
+![img.png](../../../../assets/images/tcp-connection-end.png)
 
 
 **TCP 상태의 유형**  
@@ -174,7 +174,7 @@
     - 서버로서 동작하는 패시브 오픈 호스트는 일반적으로 LISTEN 상태 유지 
     - LISTEN 호스트에게 SYN 세그먼트를 보내면 쓰리 웨이 핸드셰이크 시작
 
-![img.png](../../assets/images/connection-standby.png)
+![img.png](../../../../assets/images/connection-standby.png)
 
 - **연결 수립 과정에서 주로 볼 수 있는 상태**
   - **STN-SENT**
@@ -185,7 +185,7 @@
   - **ESTABLISHED**
     - 연결이 확립되었음을 나타내는 상태
 
-![img.png](../../assets/images/connection-establish.png)
+![img.png](../../../../assets/images/connection-establish.png)
 
 - **연결 종료 과정에서 주로 볼 수 있는 상태**
   - **FIN_WAIT-1**
@@ -201,7 +201,7 @@
     - 패시브 클로즈 호스트는 마지막 ACK 세그먼트를 수신하면 CLOSED 상태로 전이 
     - TIME-WAIT 상태의 액티브 클로즈 호스트는 일정 시간을 기다린 뒤 CLOSED 상태로 전이
 
-![img.png](../../assets/images/connection-end.png)
+![img.png](../../../../assets/images/connection-end.png)
 
 ---
 

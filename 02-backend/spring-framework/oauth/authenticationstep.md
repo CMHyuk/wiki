@@ -1,5 +1,5 @@
 
-![img.png](../../../assets/images/login.png)
+![img.png](../../../../assets/images/login.png)
 
 1. `AuthenticationConverter` 에서 정확히 필요한 값들이 왔는지 확인 (redirect_uri, client_id 등등..) 이상이 없으면 `additionalParameteres` 에 값을 넣어서 인증 객체 생성 및 저장
     1. `state`는 `CSRF`를 위해 사용이 권장된다.

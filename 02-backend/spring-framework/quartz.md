@@ -1,4 +1,4 @@
-![img.png](../../assets/images/quartz.png)
+![img.png](../../../assets/images/quartz.png)
 
 ### **전체 흐름 요약**
 1. **Scheduler 인스턴스 생성**

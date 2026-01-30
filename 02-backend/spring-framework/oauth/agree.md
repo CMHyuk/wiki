@@ -1,4 +1,4 @@
-![img.png](../../../assets/images/agree1.png)
+![img.png](../../../../assets/images/agree1.png)
 
 - `OAuth2AuthorizationConsent` 는 OAuth2 권한 부여 요청 흐름의 권한 부여 "동의" (결정)를 나타낸다.
 - 클라이언트에 대한 액세스를 승인할 때 리소스 소유자는 클라이언트가 요청한 권한의 하위 집합만 허용할 수 있다.
@@ -11,7 +11,7 @@ OAuth2AuthorizationConsent가 저장이 되고 조회 가능하다.
 
 InMemory, JDBC 버전의 구현체가 존재한다.
 
-![img.png](../../../assets/images/agree2.png)
+![img.png](../../../../assets/images/agree2.png)
 
 1. form 로그인 방식으로 인증을 시도하고 있기 때문에 `UsernamePasswordAuthenticationFilter`에서 처리한다.
 2. 인증에 성공하게 되면 `SuccessHandler`에서 사진의 url로 `sendRedirect`를 하게 된다.
@@ -21,7 +21,7 @@ InMemory, JDBC 버전의 구현체가 존재한다.
 5. `AuthorizationCodeRequestAuthenticationToken` 에서 `consentRequired` 값을 `true`로 설정
 6. 스코프 정보를 권한 부여 처리하고, 스코프를 기반으로 동의하기 페이지 생성
 
-![img.png](../../../assets/images/agree3.png)
+![img.png](../../../../assets/images/agree3.png)
 
 1. `POST` 방식으로 다시 `EndpointFilter` 과정을 거침
 2. 최초 전달한 스코프와 사용자가 선택한 스코프를 비교해서 포함 되어 있는지 체크

@@ -304,11 +304,11 @@ if (!refreshToken.isActive()) {
 **문제점**
 * `hasRole('MASTER')` 적용 x
   * `JwtAuthenticationProvider`의 token 값에 role이 밑 사진 처럼 들어가서  
-  ![img.png](../../../assets/images/roleset.png)
+  ![img.png](../../../../assets/images/roleset.png)
   * SecurityExpressionRoot 의 hasAnyAuthorityName가 false 로 반환 되어 Access Denied 에러 발생 roleSet에 MASTER가 들어가 있어야 에러가 안 남
 
 * 토큰 생성을 시큐리티에게 위임하면 roleSet에 ROLE_MASTER 가 없어서 에러 발생  
-  ![img.png](../../../assets/images/authority.png)
+  ![img.png](../../../../assets/images/authority.png)
 
 ```java
 private boolean hasAnyAuthorityName(String prefix, String... roles) {

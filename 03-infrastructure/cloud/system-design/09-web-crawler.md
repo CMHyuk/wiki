@@ -29,7 +29,7 @@
 
 **개략적 설계안 제시 및 동의 구하기**
 
-![web-crawler](../../assets/images/web-crawler-1.png)
+![web-crawler](../../../../assets/images/web-crawler-1.png)
 
 * **시작 URL 집합**
   * 웹 크롤러가 크롤링을 시작하는 출발점이다. 
@@ -114,13 +114,13 @@
   * 큐 선택기: 큐 선택기는 큐들을 순회하면서 큐에서 URL을 꺼내서 해당 큐에서 나온 URL을 다운로드하도록 지정된 작업 스레드에 전달하는 역할을 한다.
   * 작업 스레드: 전달된 URL을 다운로드하는 작업을 수행한다. 전달된 URL은 순차적으로 처리될 것이며, 작업들 사이에는 일정한 지연시간을 둘 수 있다.
 
-![webCrawler](../../assets/images/web-crawler-2.png)
+![webCrawler](../../../../assets/images/web-crawler-2.png)
 
 **우선순위**
 * 애플 제품에 대한 사용자 의견이 올라오는 포럼의 한 페이지가 애플 홈페이지와 같은 중요도를 갖는다고 보기는 어려울 것이다.
 * 유용성에 따라 URL의 우선순위를 나눌 때는 페이지랭크, 트래픽 양, 갱신 빈도 등 다양한 척도를 사용할 수 있을 것이다.
 
-![webCrawler](../../assets/images/web-crawler-3.png)
+![webCrawler](../../../../assets/images/web-crawler-3.png)
 
 * 순위결정장치: URL을 입력으로 받아 우선순위를 계산한다.
 * 큐: 우선순위별로 큐가 하나씩 할당된다. 우선순위가 높으면 선택될 확률도 올라간다.
@@ -130,7 +130,7 @@
 * 전면 큐: 우선순위 결정 과정을 처리한다.
 * 후면 큐: 크롤러가 예의 바르게 동작하도록 보증된다.
 
-![webCrawler](../../assets/images/web-crawler-4.png)
+![webCrawler](../../../../assets/images/web-crawler-4.png)
 
 **신선도**
 * 웹 페이지는 수시로 추가되고, 삭제되고, 변경된다. 따라서 데이터 신선함을 유지하기 위해선 이미 다운로드한 페이지라고 해도 주기적으로 재수집할 필요가 있다.
@@ -184,7 +184,7 @@
 **확장성**
 * 진화하지 않는 시스템은 없는 법이라서, 이런 시스템을 설게할 때는 새로운 형태의 콘텐츠를 쉽게 지원할 수 있도록 신경 써야 한다.
 
-![webCrawler](../../assets/images/web-crawler-5.png)
+![webCrawler](../../../../assets/images/web-crawler-5.png)
 
 * PNG 다운로더는 PNG 파일을 다운로드하는 플러그인 모듈이다.
 * 웹 모니터는 웹을 모니터링하여 저작권이나 상표권이 침해되는 일을 막는 모듈이다.
