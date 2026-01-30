@@ -3,7 +3,7 @@
 
 SAML Single Logout의 흐름은 아래와 같다.
 
-![img.png](../../image/sp-initiated-single-logout.png)
+![img.png](../../assets/images/sp-initiated-single-logout.png)
 
 체이닝 방식에 해당하는 3 ~ 7번 단계는 일단 제외하고, 최초로 로그아웃 요청을 보낸 서비스 제공자(SP)에서의 로그아웃 동작이 정상적으로 이루어지는지 확인하기 위해 네이버웍스에 SLO 설정을 적용하고 테스트를 수행했다.
 
@@ -13,7 +13,7 @@ SAML Single Logout의 흐름은 아래와 같다.
 
 네이버웍스에서 전달받은 SAML LogoutRequest는 디코딩 이전에 OpenSAML 라이브러리의 내부 검증 로직을 거치게되는데, SecurityException이 발생했다.
 
-![img.png](../../image/saml-request-code.png)
+![img.png](../../assets/images/saml-request-code.png)
 
 에러가 발생한 이유는, LogoutRequest는 서명된 상태(bindingRequires)로 전달되었지만 Destination 속성 값이 존재하지 않았기 때문이다.  
 
@@ -21,7 +21,7 @@ SAML Single Logout의 흐름은 아래와 같다.
 
 이러한 보안적 이유로 해당 로직이 포함된 것으로 보이며, SAML의 공식 표준화 기구인 OASIS의 [공식 문서](https://docs.oasis-open.org/security/saml/v2.0/saml-bindings-2.0-os.pdf#page=19)에서도 아래와 같은 내용을 명시하고 있다.
 
-![img.png](../../image/saml-oasis.png)
+![img.png](../../assets/images/saml-oasis.png)
 
 서명된 메시지인 경우 `Destination` 속성은 필수로 포함되어야 한다는 내용이다. 하지만 네이버웍스의 LogoutRequest는 다음과 같다.
 
@@ -58,4 +58,4 @@ SAML Single Logout의 흐름은 아래와 같다.
 
 해당 내용을 네이버웍스 측에 문의한 결과, 스펙 상의 오류임을 확인하였으며, 해당 사항은 내부적으로 수정하겠다는 회신을 받았다.
 
-![img.png](../../image/naverworks.png)
+![img.png](../../assets/images/naverworks.png)

@@ -1,4 +1,4 @@
-![img.png](../../image/samlflow.png)
+![img.png](../../assets/images/samlflow.png)
 
 **GET /private**  
 사용자가 브라우저에서 보호된 리소스에 접근하기 위해 GET 요청을 보냅니다.  

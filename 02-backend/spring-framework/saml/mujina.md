@@ -73,9 +73,9 @@ public void sendAuthnResponse(SAMLPrincipal principal,
 * `ForceAuthnFilter` 클래스
   * `OncePerRequestFilter`를 상속
 
-![img.png](../../image/mujina1.PNG)  
-![img.png](../../image/mujina2.PNG)
-![img.png](../../image/mujina3.PNG)
+![img.png](../../assets/images/mujina1.PNG)  
+![img.png](../../assets/images/mujina2.PNG)
+![img.png](../../assets/images/mujina3.PNG)
 
 ```java
 @Override

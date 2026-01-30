@@ -76,7 +76,7 @@
 - 역캡슐화를 거쳐 수신됨
   - 헤더, 트레일러 제거 후 상위 계층으로 올려보냄
 
-![img.png](../../image/ethernet-frame.png)
+![img.png](../../assets/images/ethernet-frame.png)
 
 **프리앰블**
 - 이더넷 프레임의 시작을 알리는 8바이트(64비트) 크기의 정보 
