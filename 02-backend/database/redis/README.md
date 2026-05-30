@@ -11,5 +11,5 @@
 [Redis Script](script.md)  
 [Redis 분산락 사례](distributed-lock-example.md)  
 [Redis 추천 커맨드/설정](default-setting-command.md)  
-[Redis 분산 락에서 Failover 문제 및 해결 방법](failover-situation.md)  
+[Redis 분산 락에서 Failover 문제 및 해결 방법](../../../07-troubleshooting/redis-distributed-lock-failover.md) 🔧  
 [Redis 명령어 실습](command.md)

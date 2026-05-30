@@ -14,4 +14,4 @@
 - [PV & PVC](pvpvc.md)
 
 ## 트러블슈팅
-- [문제 해결](troubleshooting.md)
+- [TestContainer 이미지 pull 권한 오류](../../07-troubleshooting/kubernetes-image-pull-unauthorized.md) 🔧

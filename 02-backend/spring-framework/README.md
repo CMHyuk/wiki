@@ -7,7 +7,6 @@
 ## 인증 & 인가
 - [OAuth](oauth/)
 - [SAML](saml/)
-- [WebAuthn](webauthn/)
 
 ## 스케줄링
 - [Quartz](quartz.md)

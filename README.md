@@ -23,3 +23,6 @@
 
 ### 06. 면접 준비 (Interviews)
 - **[면접 질문](06-interviews)**
+
+### 07. 트러블슈팅 (Troubleshooting)
+- **[실무 이슈 & 해결 기록](07-troubleshooting)**
