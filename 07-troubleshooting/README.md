@@ -8,5 +8,8 @@
 ## Redis
 - [분산 락 Failover 문제 및 해결](redis-distributed-lock-failover.md)
 
+## SAML
+- [네이버웍스 SP-initiated Single Logout 스펙 수정](saml-naverworks-single-logout.md)
+
 ## WebAuthn
 - [FIDO MDS AAGUID 포맷 오류 제보](webauthn-fido-mds-aaguid.md)
