@@ -24,4 +24,5 @@
 - [인터럽트](interrupt.md)
 - [블록/논블록](blocknonblock.md)
 - [바운드](bound.md)
+- [CPU/IO 바운드](cpuiobound.md)
 

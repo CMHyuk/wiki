@@ -25,6 +25,6 @@ Elasticsearch는 성능을 최적화하기 위해 데이터를 인덱스에 추�
 
 ### 스프링에서의 Refresh Policy
 
-![img.png](../../../assets/images/refresh.png)
-![img.png](../../../assets/images/policy.png)
-![img.png](../../../assets/images/setting.png)
+![img.png](./images/refresh.png)
+![img.png](./images/policy.png)
+![img.png](./images/setting.png)

@@ -3,7 +3,7 @@
 ### 01. 기초 지식 (Fundamentals)
 - **[프로그래밍 언어](01-fundamentals/programming-languages)**
 - **[운영체제](01-fundamentals/operating-systems)**
-- **[네트워크](01-fundamentals/networks/README.md)**
+- **[네트워크](01-fundamentals/networks)**
 
 ### 02. 백엔드 개발 (Backend)
 - **[Spring Framework](02-backend/spring-framework)**

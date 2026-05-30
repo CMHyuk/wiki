@@ -14,7 +14,7 @@ Proof Key for Code Exchange 의 약어로써 Authorization Code Grant Type의 �
 * code_challenge: code_verifier 값을 code_challenge_method 로 Hashing 한 값이다. 
 * code_challenge_method: code_challenge를 어떤 방식으로 변환할 것인지를 지정한다.  
 
-![img.png](../../../assets/images/pkce.webp) 
+![img.png](./images/pkce.webp) 
 
 1. 유저가 서비스 사용을 위해 Client application에 접근한다. 
 2. Client application 에서 인증이 필요함을 인지하고 PKCE 수행하기 전 code_verifier, code_challenge 값을 생성한다.
