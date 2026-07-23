@@ -5,3 +5,4 @@
 
 ## 데일리 면접 질문
 - [DB 옵티마이저는 어떤 기준으로 인덱스 사용 여부와 조인 순서를 결정하나요?](db-optimizer-index-join-selection.md) — 2026-07-22
+- [인덱스를 많이 만들면 어떤 단점이 있나요?](too-many-indexes-drawbacks.md) — 2026-07-23
