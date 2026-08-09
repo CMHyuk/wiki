@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#374151"/>
+    </marker>
+    <marker id="arrow-dash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+
+  <!-- 사용자 / AI 에이전트 -->
+  <rect x="30" y="250" width="130" height="60" rx="10" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="95" y="276" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">사용자 /</text>
+  <text x="95" y="295" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">AI 에이전트</text>
+
+  <!-- AI 에이전트 플랫폼 -->
+  <rect x="210" y="245" width="190" height="70" rx="10" fill="#eef4ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="305" y="275" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">AI 에이전트 플랫폼</text>
+  <text x="305" y="295" text-anchor="middle" font-size="12" fill="#6b7280">MCP 서버 등록</text>
+
+  <!-- MCP 서버 -->
+  <rect x="460" y="245" width="200" height="70" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="560" y="275" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">MCP 서버</text>
+  <text x="560" y="295" text-anchor="middle" font-size="12" fill="#6b7280">중개자 · OAuth2 Client</text>
+
+  <!-- 인증 서버 (OP) -->
+  <rect x="460" y="40" width="200" height="70" rx="10" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="560" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">인증 서버 (OIDC Provider)</text>
+  <text x="560" y="90" text-anchor="middle" font-size="12" fill="#b45309">발급 권한 = 사용자 권한 ∩ 요청 scope</text>
+
+  <!-- 리소스 API -->
+  <rect x="460" y="450" width="200" height="70" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="560" y="480" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">리소스 API</text>
+  <text x="560" y="500" text-anchor="middle" font-size="12" fill="#6b7280">Resource Server · scope 검증</text>
+
+  <!-- 사용자 → 플랫폼 -->
+  <line x1="160" y1="280" x2="204" y2="280" stroke="#374151" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="182" y="266" text-anchor="middle" font-size="12" fill="#374151">작업 요청</text>
+
+  <!-- 플랫폼 → MCP -->
+  <line x1="400" y1="280" x2="454" y2="280" stroke="#374151" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="427" y="266" text-anchor="middle" font-size="12" fill="#374151">tool 호출</text>
+
+  <!-- 사전 등록 (플랫폼 → OP, 점선) -->
+  <path d="M 305 245 L 305 75 L 452 75" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#arrow-dash)"/>
+  <text x="290" y="160" text-anchor="end" font-size="12" fill="#6b7280">discovery 체인 (401 → RFC 9728)</text>
+  <text x="290" y="177" text-anchor="end" font-size="12" fill="#6b7280">/.well-known/openid-configuration</text>
+
+  <!-- ① MCP → OP -->
+  <line x1="600" y1="245" x2="600" y2="116" stroke="#374151" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="612" y="170" font-size="12.5" font-weight="700" fill="#111827">① OIDC 인증 + 토큰 요청</text>
+  <text x="612" y="188" font-size="12" fill="#6b7280">이 API에 필요한 scope만 요청</text>
+
+  <!-- ② OP → MCP -->
+  <line x1="520" y1="110" x2="520" y2="239" stroke="#374151" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="508" y="170" text-anchor="end" font-size="12.5" font-weight="700" fill="#111827">② 축소된 access token 발급</text>
+
+  <!-- ③ MCP → API -->
+  <line x1="520" y1="315" x2="520" y2="444" stroke="#374151" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="508" y="375" text-anchor="end" font-size="12.5" font-weight="700" fill="#111827">③ 축소 토큰으로 호출</text>
+  <text x="508" y="393" text-anchor="end" font-size="12" fill="#6b7280">Authorization: Bearer &lt;token&gt;</text>
+
+  <!-- ④ API → MCP (점선) -->
+  <line x1="600" y1="450" x2="600" y2="321" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#arrow-dash)"/>
+  <text x="612" y="375" font-size="12.5" font-weight="700" fill="#374151">④ scope 검증 후 응답</text>
+
+  <!-- 우측 주석 박스 -->
+  <rect x="720" y="215" width="210" height="130" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="1.2"/>
+  <text x="825" y="243" text-anchor="middle" font-size="12.5" font-weight="700" fill="#854d0e">핵심</text>
+  <text x="825" y="266" text-anchor="middle" font-size="12" fill="#713f12">토큰이 탈취되어도 피해가</text>
+  <text x="825" y="284" text-anchor="middle" font-size="12" fill="#713f12">"그 API의 권한 범위"로</text>
+  <text x="825" y="302" text-anchor="middle" font-size="12" fill="#713f12">한정된다</text>
+  <text x="825" y="326" text-anchor="middle" font-size="12" fill="#a16207">— 최소 권한 원칙</text>
+</svg>
