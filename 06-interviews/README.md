@@ -7,3 +7,4 @@
 - [DB 옵티마이저는 어떤 기준으로 인덱스 사용 여부와 조인 순서를 결정하나요?](db-optimizer-index-join-selection.md) — 2026-07-22
 - [NGINX를 reverse proxy로 도입한 이유는 무엇인가요?](nginx-reverse-proxy.md) — 2026-08-04
 - [Thread Dump는 보통 어떤 상황에서 분석하나요?](thread-dump-analysis.md) — 2026-08-07
+- [JWT의 signature는 어떤 방식으로 생성되고, 무엇을 보장하나요?](jwt-signature.md) — 2026-08-11
