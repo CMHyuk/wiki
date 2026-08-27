@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="600" viewBox="0 0 920 600" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="920" height="600" fill="#ffffff"/>
+
+  <!-- 진입 -->
+  <rect x="310" y="24" width="300" height="72" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="460" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">SP-시작 진입점으로 들어와 세션을 심는다</text>
+  <text x="460" y="74" text-anchor="middle" font-size="11.5" fill="#047857">/sp-initiated-sso/session-token — 앞 절의 ①~④와 동일</text>
+
+  <line x1="460" y1="98" x2="460" y2="126" stroke="#374151" stroke-width="1.6" marker-end="url(#a5)"/>
+
+  <!-- 분기 -->
+  <rect x="290" y="128" width="340" height="62" rx="31" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.6"/>
+  <text x="460" y="155" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">이 앱의 템플릿 개시 흐름이</text>
+  <text x="460" y="176" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309">IDP_VIA_SP_FLOW 인가?</text>
+
+  <!-- NO -->
+  <polyline points="290,159 160,159 160,214" fill="none" stroke="#374151" stroke-width="1.6" marker-end="url(#a5)"/>
+  <text x="225" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="#6b7280">아니오</text>
+  <rect x="20" y="216" width="280" height="96" rx="10" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.4"/>
+  <text x="160" y="244" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">기존 SP-시작 경로</text>
+  <text x="160" y="268" text-anchor="middle" font-size="11.5" fill="#4b5563">SP 로그인 URL로 리다이렉트</text>
+  <text x="160" y="290" text-anchor="middle" font-size="11.5" fill="#4b5563">(Microsoft · ChatGPT · Kintone …)</text>
+
+  <!-- YES -->
+  <polyline points="630,159 760,159 760,214" fill="none" stroke="#374151" stroke-width="1.6" marker-end="url(#a5)"/>
+  <text x="697" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b45309">예</text>
+  <rect x="620" y="216" width="280" height="96" rx="10" fill="#eef4ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="760" y="244" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">IdP-시작으로 갈아탄다</text>
+  <text x="760" y="268" text-anchor="middle" font-size="11.5" fill="#4b5563">방금 꺼낸 토큰의 JWT를 일회용 키로</text>
+  <text x="760" y="290" text-anchor="middle" font-size="11.5" fill="#4b5563">캐시에 넣고 /idp/initiated/login 으로</text>
+
+  <line x1="760" y1="314" x2="760" y2="342" stroke="#374151" stroke-width="1.6" marker-end="url(#a5)"/>
+  <rect x="620" y="344" width="280" height="66" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="1.5"/>
+  <text x="760" y="370" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Claude · Cursor</text>
+  <text x="760" y="392" text-anchor="middle" font-size="11.5" fill="#a16207">서명된 Assertion 수신 → 로그인 완료</text>
+
+  <!-- 비교 패널 -->
+  <text x="20" y="452" font-size="13" font-weight="700" fill="#111827">사용자 눈에 보이는 화면</text>
+
+  <rect x="20" y="466" width="430" height="116" rx="10" fill="#fff1f2" stroke="#f87171" stroke-width="1.4"/>
+  <text x="44" y="492" font-size="12" font-weight="700" fill="#991b1b">세션 없이 IdP-시작만 태웠을 때</text>
+  <rect x="44" y="504" width="106" height="46" rx="7" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="97" y="532" text-anchor="middle" font-size="11" fill="#374151">앱 타일 클릭</text>
+  <line x1="154" y1="527" x2="170" y2="527" stroke="#b91c1c" stroke-width="1.5" marker-end="url(#a5)"/>
+  <rect x="174" y="504" width="120" height="46" rx="7" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="234" y="526" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">우리 아이디 입력창</text>
+  <text x="234" y="543" text-anchor="middle" font-size="10.5" fill="#b91c1c">여기서 흐름이 끊긴다</text>
+  <line x1="298" y1="527" x2="314" y2="527" stroke="#b91c1c" stroke-width="1.5" marker-end="url(#a5)"/>
+  <rect x="318" y="504" width="106" height="46" rx="7" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="371" y="532" text-anchor="middle" font-size="11" fill="#374151">로그인 완료</text>
+  <text x="44" y="572" font-size="11" fill="#991b1b">원클릭이 아니라 "클릭 + 재로그인"</text>
+
+  <rect x="470" y="466" width="430" height="116" rx="10" fill="#ecfdf5" stroke="#34d399" stroke-width="1.4"/>
+  <text x="494" y="492" font-size="12" font-weight="700" fill="#065f46">IDP_VIA_SP_FLOW 로 태웠을 때</text>
+  <rect x="494" y="504" width="150" height="46" rx="7" fill="#ffffff" stroke="#6ee7b7"/>
+  <text x="569" y="532" text-anchor="middle" font-size="11" fill="#374151">앱 타일 클릭</text>
+  <line x1="648" y1="527" x2="668" y2="527" stroke="#047857" stroke-width="1.5" marker-end="url(#a5)"/>
+  <rect x="672" y="504" width="204" height="46" rx="7" fill="#ffffff" stroke="#6ee7b7"/>
+  <text x="774" y="526" text-anchor="middle" font-size="11" fill="#374151">로그인 완료</text>
+  <text x="774" y="543" text-anchor="middle" font-size="10.5" fill="#047857">중간 화면은 리다이렉트로만 스쳐 지나감</text>
+  <text x="494" y="572" font-size="11" fill="#065f46">세션이 이미 있으므로 아이디 입력창이 뜨지 않는다</text>
+</svg>
